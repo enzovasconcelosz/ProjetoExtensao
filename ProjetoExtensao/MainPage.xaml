@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.MainPage">
+
+        <VerticalStackLayout
+            VerticalOptions="Center"
+            Padding="30,0"
+            Spacing="25">
+
+            <Label
+                Text="Bem vindo!"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label
+                Text="Realize o login"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2" />
+
+            <Label
+                Text="E-mail:"/>
+            <Entry
+                MaxLength="20"
+                x:Name="Usuario"
+                Placeholder="Informe seu e-mail"/>
+
+            <Label
+                Text="Senha:"/>
+            <Entry
+                MaxLength="20"
+                x:Name="Senha"
+                IsPassword="True"
+                Placeholder="Digite a sua senha"/>
+
+            <Button
+                x:Name="btnLogin"
+                Text="Entrar" 
+                Clicked="BotaoLogin_Clicked"
+                HorizontalOptions="Fill"/>
+
+            <Button
+                x:Name="btnEsqueceuSenha"
+                Text="Esqueci minha senha" 
+                Clicked="BotaoEsqueceuSenha_Clicked"/>
+
+            <Button
+                Padding="0"
+                x:Name="btnCadastrar"
+                Text="Cadastrar" 
+                Clicked="BotaoCadastrar_Clicked"/>
+        </VerticalStackLayout>
+</ContentPage>
