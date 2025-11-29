@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.EsqueceuSenha"
+             Title="EsqueceuSenha">
+    <VerticalStackLayout     
+        VerticalOptions="Center"
+        Padding="30,0"
+        Spacing="25">
+
+        <Label
+            Text="E-mail"
+        />
+        <Entry                
+            MaxLength="60"
+            x:Name="Email"
+            Placeholder="Informe seu e-mail"
+        />
+
+        <Button
+            x:Name="btnCancelar"
+            Text="Cancelar" 
+            Clicked="BotaoCancelar_Clicked"
+            HorizontalOptions="End"
+            WidthRequest="200"
+        />
+
+        <Button
+            x:Name="btnPesquisar"
+            Text="Pesquisar" 
+            Clicked="BotaoPesquisar_Clicked"
+            HorizontalOptions="End"
+            WidthRequest="200"
+        />
+    </VerticalStackLayout>
+</ContentPage>

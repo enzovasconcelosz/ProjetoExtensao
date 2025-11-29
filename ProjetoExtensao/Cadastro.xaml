@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.Cadastro"
+             Title="Cadastro">
+    <VerticalStackLayout
+        VerticalOptions="Center"
+        Padding="30,0"
+        Spacing="25">
+
+        <Label 
+            Text="Registro de usuário" 
+            Style="{StaticResource Headline}"    
+        />
+        <Label
+             Text="Crie uma conta para iniciar"
+             Style="{StaticResource SubHeadline}"
+        />
+        
+        <Label
+             Text="Nome"
+        />
+        <Entry                
+            MaxLength="120"
+            x:Name="Nome"
+            Placeholder="Nome completo"
+        />
+        
+        <Label
+             Text="E-mail"
+        />
+        <Entry                
+            MaxLength="60"
+            x:Name="Email"
+            Placeholder="Informe seu e-mail"
+        />
+        
+        <Label
+             Text="Senha"
+        />
+        <Entry                
+            MaxLength="20"
+            x:Name="Senha"
+            Placeholder="Informe sua senha"
+            IsPassword="True"
+        />
+        <Entry                
+            MaxLength="20"
+            x:Name="ConfirmacaoSenha"
+            Placeholder="Confirme sua senha"
+            IsPassword="True"
+        />
+
+        <Button
+            x:Name="btnJaTenhoConta"
+            Text="Já tenho uma conta" 
+            Clicked="BotaoJaTenhoConta_Clicked"
+            HorizontalOptions="Fill"
+        />  
+    </VerticalStackLayout>
+</ContentPage>

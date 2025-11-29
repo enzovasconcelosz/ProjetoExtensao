@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace ProjetoExtensao
+﻿namespace ProjetoExtensao
 {
     public partial class App : Application
     {
