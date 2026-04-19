@@ -1,95 +1,126 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ProjetoExtensao.Login">
+             x:Class="ProjetoExtensao.Login"
+             BackgroundColor="#EAF4FF">
 
-    <VerticalStackLayout>
-        <Border
-            StrokeThickness="0">
-            <VerticalStackLayout>
-                <Image
-                    Source="dotnet_bot.png"    
-                    HeightRequest="300"
-                    VerticalOptions="Fill"
-                    HorizontalOptions="Fill"
-                />
-            </VerticalStackLayout>
+    <VerticalStackLayout BackgroundColor="#EAF4FF" 
+                             Padding="24" 
+                             Spacing="18"
+                             Grid.Row="0">
+        
+        <Button Text="Testar Conexão com Banco" 
+        Clicked="BtnTestarConexao_Clicked" 
+        Margin="0,20,0,0" />
+        
+        <Image Source="dotnet_bot.png"
+                   WidthRequest="300"
+                   HeightRequest="200"/>
+
+        <Label 
+                Text="Olá!" FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="#0B2A4A" />
+
+        <Border Stroke="#D6DCE6" 
+                    StrokeThickness="1" 
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#FFFFFF"
+                    Grid.Row="1">
+            <Entry x:Name="Usuario"
+                           Placeholder="E-mail"
+                           TextColor="#333"
+                           BackgroundColor="Transparent"
+                           Margin="8"
+                           MaxLength="100" />
         </Border>
-        <Border
-            StrokeThickness="0">
-            <VerticalStackLayout
-                Padding="20">
-                <Label
-                    Text="Bem vindo!"
-                    Style="{StaticResource Headline}"
-                    HorizontalOptions="Center"
-                />
-            </VerticalStackLayout>
+
+        <Border Stroke="#D6DCE6" 
+                    StrokeThickness="1" 
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#FFFFFF">
+            <Grid ColumnDefinitions="*,40" 
+                      Padding="0">
+                <Entry x:Name="Senha"
+                               IsPassword="True"
+                               Placeholder="Senha"
+                               TextColor="#333"
+                               BackgroundColor="Transparent"
+                               Margin="8" />
+                <Button Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                WidthRequest="15" HeightRequest="15"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                ImageSource="eye-icon.svg"
+                                Clicked="TogglePasswordVisibility_Clicked"
+                                AutomationId="PasswordToggle" />
+            </Grid>
         </Border>
-        <Border
-             StrokeThickness="0">
-            <VerticalStackLayout
-                Padding="10 10 0 10"
-                Spacing="20">
-                <Border Stroke="Gray"
-                        StrokeThickness="1"
-                        Padding="8"
-                        StrokeShape="RoundRectangle 20"
-                        Background="AliceBlue">
-                    <Entry                
-                        MaxLength="20"
-                        x:Name="Usuario"
-                        Placeholder="Informe seu e-mail"
+
+        <Button x:Name="btnEsqueceuSenha"
+                        Text="Esqueci minha senha"
+                        Clicked="BotaoEsqueceuSenha_Clicked"
                         BackgroundColor="Transparent"
-                        TextColor="Black"
-                    />
-                </Border>
-                <Border Stroke="Gray"
-                        StrokeThickness="1"
-                        Padding="8"
-                        StrokeShape="RoundRectangle 20"
-                        Background="AliceBlue">
-                    <Entry
-                        MaxLength="20"
-                        x:Name="Senha"
-                        IsPassword="True"
-                        Placeholder="Digite a sua senha"
-                        BackgroundColor="Transparent"     
-                        TextColor="Black"
-                    />
-                </Border>
-            </VerticalStackLayout>
-        </Border>
-        <Border    
-            StrokeThickness="0">
-            <VerticalStackLayout
-                Spacing="20">
-                <Button
-                    x:Name="btnEsqueceuSenha"
-                    Text="Esqueci minha senha" 
-                    Clicked="BotaoEsqueceuSenha_Clicked"
-                    HorizontalOptions="Center"
-                    WidthRequest="300"
-                    BackgroundColor="Transparent"
-                    TextColor="White"
-                />
-                <Button
-                    x:Name="btnLogin"
-                    Text="Entrar" 
-                    Clicked="BotaoLogin_Clicked"
-                    HorizontalOptions="Center"
-                    WidthRequest="300"
-                    BackgroundColor="LawnGreen"
-                />
-                <Button
-                    x:Name="btnCadastrar"
-                    Text="Cadastrar" 
-                    Clicked="BotaoCadastrar_Clicked"
-                    HorizontalOptions="Center"
-                    WidthRequest="300"
-                    BackgroundColor="LightBlue"
-                />
-            </VerticalStackLayout>
-        </Border>
+                        TextColor="#1473FF"
+                        HorizontalOptions="Center"
+                        Padding="-35 0 0 0"/>
+
+        <Button x:Name="btnLogin"
+                        Text="Login"
+                        Clicked="BotaoLogin_Clicked"
+                        BackgroundColor="#087AFE"
+                        TextColor="White"
+                        CornerRadius="24"
+                        HeightRequest="48"
+                        FontAttributes="Bold" />
+
+        <Button x:Name="btnCadastrar"
+                        Text="Cadastre-se"
+                        Clicked="BotaoCadastrar_Clicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#1473FF"
+                        HorizontalOptions="Center" />
+
+        <Grid ColumnDefinitions="*,Auto, *" 
+                  VerticalOptions="Center"
+                  Padding="0" Margin="0 10">
+            <BoxView Color="#E6E6E6" 
+                         HeightRequest="1" 
+                         VerticalOptions="Center" />
+            <Label Text="  Ou faça login com  " 
+                       Grid.Column="1" FontSize="12" 
+                       TextColor="#9AA3B2" />
+            <BoxView Grid.Column="2" 
+                         Color="#E6E6E6" 
+                         HeightRequest="1" 
+                         VerticalOptions="Center" />
+        </Grid>
+
+        <WebView HeightRequest="80" 
+                     WidthRequest="285" 
+                     HorizontalOptions="Center" 
+                     BackgroundColor="#EAF4FF">
+            <WebView.Source>
+                <HtmlWebViewSource>
+                    <HtmlWebViewSource.Html>
+                        <![CDATA[
+                                  <div style="width:260px;height:72px;display:flex;align-items:center;justify-content:center;background:transparent;">
+                                    <div style="width:56px;height:56px;border-radius:28px;display:flex;align-items:center;justify-content:center;background:#FFF;">
+                                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style="display:block;width:36px;height:36px;">
+                                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                        <path fill="none" d="M0 0h48v48H0z"></path>
+                                      </svg>
+                                    </div>
+                                  </div>
+                                ]]>
+                    </HtmlWebViewSource.Html>
+                </HtmlWebViewSource>
+            </WebView.Source>
+        </WebView>
+
     </VerticalStackLayout>
+
 </ContentPage>

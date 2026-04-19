@@ -2,74 +2,88 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.TelaInicial"
-             Title="TelaInicial">
+             Title="TelaInicial"
+             BackgroundColor="#EAF4FF">
 
-    <VerticalStackLayout>
-        <Border
-            StrokeThickness="0">
-            <HorizontalStackLayout>
-                <ImageButton
-                    Source="dotnet_bot.png"
-                    WidthRequest="80"
+    <VerticalStackLayout Margin="10">
+        <HorizontalStackLayout>
+            <Frame
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    BackgroundColor="AliceBlue"
                     HorizontalOptions="Start"
-                    Margin="30"
-                    HeightRequest="80"
-                    Background="AliceBlue"
-                    Clicked="BotaoConfiguracoes_Clicked"
-                />
-                <Label 
-                    x:Name="lblBoasVindas"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                />
-            </HorizontalStackLayout>
-        </Border>
-        <Border 
-            HeightRequest="110"
-            StrokeThickness="0">
-            <VerticalStackLayout
-                HorizontalOptions="Center"
-                VerticalOptions="Center">
-                <Label 
-                    Text="Calendário"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                />
+                Margin="20 0">
+                <ImageButton Source="dotnet_bot.png"
+                                 BackgroundColor="Transparent"
+                                 Clicked="BotaoConfiguracoes_Clicked"
+                                 WidthRequest="64"
+                                 HeightRequest="64" />
+            </Frame>
+
+            <Label x:Name="lblBoasVindas"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       VerticalOptions="Center"
+                       TextColor="Black"
+                   Padding="10"/>
+        </HorizontalStackLayout>
+
+        <Frame BackgroundColor="MediumPurple" CornerRadius="14" Padding="10" HasShadow="False" Margin="0 0 10 0">
+            <CollectionView x:Name="WeekCollection"
+                                ItemsSource="{Binding WeekDays}"
+                                SelectionMode="Single"
+                                HeightRequest="86"
+                                ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="6" WidthRequest="68">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Label Text="{Binding ShortName}" FontSize="11" HorizontalOptions="Center" Opacity="1" TextColor="AliceBlue" />
+
+                            <Frame Grid.Row="1"
+                                       HeightRequest="35"
+                                       WidthRequest="35"
+                                       CornerRadius="15"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="BlueViolet"
+                                       HasShadow="False">
+                                <Label Text="{Binding DayNumber}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="AliceBlue" />
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+
+        <!-- Próximo evento -->
+        <Frame BackgroundColor="MediumPurple" HeightRequest="330" CornerRadius="15" Padding="15" HasShadow="False" Margin="0 0 10 0">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Próximo evento em" FontAttributes="Bold" />
+                <Label x:Name="lblDiasProximoEvento" Text="6 Dias" FontSize="20" FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,80" RowDefinitions="Auto,Auto" ColumnSpacing="8">
+                    <Label Text="Consulta - Oncologista" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" />
+                    <Image Source="placeholder_image.png" Grid.RowSpan="2" Grid.Column="1" WidthRequest="56" HeightRequest="56" Aspect="AspectFill" />
+
+                    <Label Text="Retorno oncologista Dra. Angelica Bezerra" Grid.Row="1" Grid.Column="0" LineBreakMode="TailTruncation" />
+                </Grid>
             </VerticalStackLayout>
-        </Border>
-        <Border 
-            HeightRequest="280"
-            StrokeThickness="0">
-            <VerticalStackLayout
-                VerticalOptions="Center"
-                HorizontalOptions="Center">
-                <Label 
-                    Text="Dados do evento"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                />
+        </Frame>
+
+        <!-- Dica de hoje -->
+        <Frame BackgroundColor="MediumPurple" CornerRadius="15" Padding="15" HasShadow="False">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Dica de hoje!" FontAttributes="Bold" TextColor="AliceBlue" FontSize="22"/>
+                <Label Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal." LineBreakMode="WordWrap" TextColor="AliceBlue" />
+                <Button Text="Clique aqui e saiba mais" BackgroundColor="MediumPurple" TextColor="AliceBlue" CornerRadius="8" WidthRequest="200" />
             </VerticalStackLayout>
-        </Border>
-        <Border 
-            HeightRequest="250"
-            StrokeThickness="0">
-            <VerticalStackLayout
-                Padding="10">
-                <Label 
-                    Text="Dica de hoje!"
-                    HorizontalOptions="Start"
-                    VerticalOptions="Center"
-                />
-                <Label Padding="20"
-                    Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal."
-                    HorizontalOptions="Start"
-                    VerticalOptions="Center"
-                />
-                <Button
-                    Text="Clique aqui e saiba mais"
-                    WidthRequest="200"
-                />
-            </VerticalStackLayout>
-        </Border>
+        </Frame>
     </VerticalStackLayout>
+
 </ContentPage>

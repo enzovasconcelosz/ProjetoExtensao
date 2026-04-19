@@ -24,4 +24,16 @@ public partial class Configuracoes : ContentPage
             App.Current.MainPage = new Login();
         }
     }
+
+    private void BotaoVoltar_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            App.Current.MainPage = new TelaInicial();
+        }
+        catch
+        {
+            // ignore navigation failures
+        }
+    }
 }
