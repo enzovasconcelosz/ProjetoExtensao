@@ -1,11 +1,11 @@
-namespace ProjetoExtensao;
-
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
+namespace ProjetoExtensao;
+
 public partial class TelaInicial : ContentPage
 {
-    public ObservableCollection<WeekDay> WeekDays { get; set; } = [];
+    public ObservableCollection<WeekDay> WeekDays { get; set; } = new ObservableCollection<WeekDay>();
 
     public TelaInicial()
     {
@@ -33,6 +33,7 @@ public partial class TelaInicial : ContentPage
         {
             var cv = this.FindByName<CollectionView>("WeekCollection");
             cv?.SelectedItem = today;
+            // cv?.ScrollTo(today, position: ScrollToPosition.Start);
         }
     }
 
@@ -53,11 +54,9 @@ public partial class TelaInicial : ContentPage
         if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
         {
             WeekDay? selected = e.CurrentSelection[0] as WeekDay;
-
             if (selected == null)
                 return;
 
-            // Navegar para a tela de calendário (placeholder)
             try
             {
                 await Navigation.PushAsync(new ContentPage { Title = "Calendário" });
@@ -74,20 +73,26 @@ public partial class TelaInicial : ContentPage
         WeekDays.Clear();
         var today = DateTime.Today;
 
-        // calcula início da semana na segunda-feira
-        int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
-        var start = today.AddDays(-diff);
+        var labelsMap = new Dictionary<DayOfWeek, string>
+        {
+            [DayOfWeek.Monday] = "SEG",
+            [DayOfWeek.Tuesday] = "TER",
+            [DayOfWeek.Wednesday] = "QUA",
+            [DayOfWeek.Thursday] = "QUI",
+            [DayOfWeek.Friday] = "SEX",
+            [DayOfWeek.Saturday] = "SAB",
+            [DayOfWeek.Sunday] = "DOM"
+        };
 
-        string[] labels = ["SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM"];
-
+        // Coloca o dia atual primeiro e os próximos 6 dias
         for (int i = 0; i < 7; i++)
         {
-            var dt = start.AddDays(i);
+            var dt = today.AddDays(i);
             var isToday = dt.Date == today.Date;
             WeekDays.Add(new WeekDay
             {
                 Date = dt,
-                ShortName = labels[i],
+                ShortName = labelsMap[dt.DayOfWeek],
                 DayNumber = dt.Day.ToString(),
                 IsToday = isToday
             });
@@ -98,12 +103,8 @@ public partial class TelaInicial : ContentPage
 public class WeekDay : INotifyPropertyChanged
 {
     public DateTime Date { get; set; }
-
     public string ShortName { get; set; } = string.Empty;
-
     public string DayNumber { get; set; } = string.Empty;
-
     public bool IsToday { get; set; }
-
     public event PropertyChangedEventHandler? PropertyChanged;
 }

@@ -2,11 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.CadastroTipoEvento"
-             Title="CadastroTipoEvento">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="Cadastro Tipo Evento"
+             BackgroundColor="AliceBlue">
+
+    <VerticalStackLayout Spacing="12" Padding="20">
+        <Label Text="Tipo de evento" FontAttributes="Bold" HorizontalOptions="Center" FontSize="18" TextColor="Black"/>
+
+        <Frame CornerRadius="12" BackgroundColor="#EAF4FF" HasShadow="False" Padding="12">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Nome" FontSize="14" TextColor="Black"/>
+                <Entry x:Name="entryNome" Placeholder="Nome do tipo de evento" />
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Button Text="Salvar" BackgroundColor="#087AFE" TextColor="White" Clicked="BtnSalvar_Clicked"/>
+                    <Button Text="Cancelar" BackgroundColor="Transparent" TextColor="#007AFF" Clicked="BtnCancelar_Clicked"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
     </VerticalStackLayout>
+
 </ContentPage>

@@ -26,14 +26,22 @@ namespace ProjetoExtensao
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            //string stringDeConexao = "Server=192.168.1.4,1433;Database=NaoMeEsquece;User Id=sa;Password=123456;TrustServerCertificate=True";
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-                                   ?? "Server=.;Database=ProjetoExtensaoDB;Trusted_Connection=True;";
-
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            var connectionString = @"Server=192.168.1.4,1433;Database=NaoMeEsquece;User Id=sa;Password=123456;Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;Connection Timeout=10;";
+            
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    connectionString
+                )
+            );
 
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IClientService, ClientService>();
+
+            // TipoEvento repository/service
+            builder.Services.AddScoped<ProjetoExtensao.Application.Interfaces.ITipoEventoRepository, ProjetoExtensao.Infrastructure.Repositories.TipoEventoRepository>();
+            builder.Services.AddScoped<ProjetoExtensao.Application.Interfaces.ITipoEventoService, ProjetoExtensao.Application.Services.TipoEventoService>();
 
             return builder.Build();
         }

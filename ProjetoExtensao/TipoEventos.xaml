@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.TipoEventos"
+             Title="Tipos de eventos"
+             BackgroundColor="AliceBlue">
+
+    <VerticalStackLayout Spacing="12" Padding="12">
+        <Label Text="Tipos de eventos" FontAttributes="Bold" HorizontalOptions="Center" FontSize="18" TextColor="Black"/>
+
+        <Frame CornerRadius="12" BackgroundColor="#EAF4FF" HasShadow="False" Padding="12" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid RowDefinitions="Auto, *">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="" />
+                    <Button Text="+" Grid.Column="1" BackgroundColor="#4DA2FF" TextColor="White" Clicked="BtnAdicionar_Clicked"/>
+                </Grid>
+
+                <CollectionView x:Name="cvTipos" Grid.Row="1" BackgroundColor="Transparent" Margin="0,8,0,0" ItemsLayout="VerticalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="6" ColumnDefinitions="*,Auto,Auto">
+                                <Label Text="{Binding Nome}" VerticalOptions="Center" TextColor="Black"/>
+                                <ImageButton Source="delete_icon.png" Grid.Column="1" WidthRequest="28" HeightRequest="28" BackgroundColor="Transparent" Clicked="BtnExcluir_Clicked"/>
+                                <ImageButton Source="edit_icon.png" Grid.Column="2" WidthRequest="28" HeightRequest="28" BackgroundColor="Transparent" Clicked="BtnEditar_Clicked"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Frame>
+
+    </VerticalStackLayout>
+
+</ContentPage>

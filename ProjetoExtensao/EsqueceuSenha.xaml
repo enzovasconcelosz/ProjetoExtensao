@@ -2,35 +2,60 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.EsqueceuSenha"
-             Title="EsqueceuSenha">
-    <VerticalStackLayout     
-        VerticalOptions="Center"
-        Padding="30,0"
-        Spacing="25">
+             BackgroundColor="#EAF4FF">
 
-        <Label
-            Text="E-mail"
-        />
-        <Entry                
-            MaxLength="60"
-            x:Name="Email"
-            Placeholder="Informe seu e-mail"
-        />
+    <VerticalStackLayout BackgroundColor="#EAF4FF"
+                         Padding="24"
+                         Spacing="16"
+                         VerticalOptions="Center">
 
-        <Button
-            x:Name="btnCancelar"
-            Text="Cancelar" 
-            Clicked="BotaoCancelar_Clicked"
-            HorizontalOptions="End"
-            WidthRequest="200"
-        />
+        <Label Text="Recuperar senha"
+               FontSize="28"
+               FontAttributes="Bold"
+               TextColor="#0B2A4A"
+               HorizontalOptions="Center" />
 
-        <Button
-            x:Name="btnPesquisar"
-            Text="Pesquisar" 
-            Clicked="BotaoPesquisar_Clicked"
-            HorizontalOptions="End"
-            WidthRequest="200"
-        />
+        <Border Stroke="#D6DCE6"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="#FFFFFF">
+            <Entry x:Name="Email"
+                   Placeholder="Informe seu e-mail"
+                   TextColor="#333"
+                   BackgroundColor="Transparent"
+                   Margin="8"
+                   MaxLength="100" />
+        </Border>
+
+        <Button x:Name="btnPesquisar"
+                Text="Consultar"
+                Clicked="BotaoPesquisar_Clicked"
+                BackgroundColor="#3F2970"
+                TextColor="White"
+                CornerRadius="24"
+                HeightRequest="48"
+                FontAttributes="Bold" />
+
+        <Button x:Name="btnCancelar"
+                Text="Voltar"
+                Clicked="BotaoCancelar_Clicked"
+                BackgroundColor="Transparent"
+                TextColor="#3F2970"
+                HorizontalOptions="Center" />
+
+        <Frame x:Name="LoadingOverlay"
+           BackgroundColor="#80000000"
+           CornerRadius="0"
+           HasShadow="False"
+           IsVisible="False"
+           Padding="0"
+           VerticalOptions="Fill"
+           HorizontalOptions="Fill">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <ActivityIndicator x:Name="Loader" IsRunning="True" Color="White" WidthRequest="48" HeightRequest="48" />
+                <Label Text="Aguarde, consultando..." TextColor="White" />
+            </VerticalStackLayout>
+        </Frame>
     </VerticalStackLayout>
+
 </ContentPage>

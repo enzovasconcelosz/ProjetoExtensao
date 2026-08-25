@@ -51,7 +51,10 @@
 
         <VerticalStackLayout Margin="20" Spacing="0">
             <Grid Padding="14" ColumnDefinitions="*,Auto">
-                <Label Text="Tipo de eventos" VerticalOptions="Center" TextColor="Black" FontSize="20"/>
+                <Button Text="Tipo de eventos" VerticalOptions="Center" TextColor="Black" FontSize="20"
+                        BackgroundColor="Transparent"
+                        Clicked="BtnTipoEventos_Clicked"
+                        HorizontalOptions="Start"/>
                 <Label Text="›" 
                        Grid.Column="1" 
                        VerticalOptions="Center" 

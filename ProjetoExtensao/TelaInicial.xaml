@@ -8,33 +8,33 @@
     <VerticalStackLayout Margin="10">
         <HorizontalStackLayout>
             <Frame
-                    WidthRequest="60"
-                    HeightRequest="60"
-                    CornerRadius="30"
-                    BackgroundColor="AliceBlue"
-                    HorizontalOptions="Start"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="AliceBlue"
+                HorizontalOptions="Start"
                 Margin="20 0">
                 <ImageButton Source="dotnet_bot.png"
-                                 BackgroundColor="Transparent"
-                                 Clicked="BotaoConfiguracoes_Clicked"
-                                 WidthRequest="64"
-                                 HeightRequest="64" />
+                             BackgroundColor="Transparent"
+                             Clicked="BotaoConfiguracoes_Clicked"
+                             WidthRequest="64"
+                             HeightRequest="64" />
             </Frame>
 
             <Label x:Name="lblBoasVindas"
-                       FontAttributes="Bold"
-                       FontSize="18"
-                       VerticalOptions="Center"
-                       TextColor="Black"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   VerticalOptions="Center"
+                   TextColor="Black"
                    Padding="10"/>
         </HorizontalStackLayout>
 
         <Frame BackgroundColor="MediumPurple" CornerRadius="14" Padding="10" HasShadow="False" Margin="0 0 10 0">
             <CollectionView x:Name="WeekCollection"
-                                ItemsSource="{Binding WeekDays}"
-                                SelectionMode="Single"
-                                HeightRequest="86"
-                                ItemsLayout="HorizontalList">
+                            ItemsSource="{Binding WeekDays}"
+                            SelectionMode="Single"
+                            HeightRequest="86"
+                            ItemsLayout="HorizontalList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="6" WidthRequest="68">
@@ -51,9 +51,9 @@
                                        CornerRadius="15"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       BackgroundColor="BlueViolet"
+                                       BackgroundColor="#3F2970"
                                        HasShadow="False">
-                                <Label Text="{Binding DayNumber}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="AliceBlue" />
+                                <Label Text="{Binding DayNumber}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Black" FontAttributes="Bold" FontSize="16" />
                             </Frame>
                         </Grid>
                     </DataTemplate>

@@ -24,6 +24,9 @@ namespace ProjetoExtensao.Entities
         public long? IdContatoEletronico { get; set; }
         public ContatoEletronico? ContatoEletronico { get; set; }
 
+        public long? IdAparencia { get; set; }
+        public Aparencia? Aparencia { get; set; }
+
         public long? IdPreferenciaUsuario { get; set; }
         public PreferenciaUsuario? PreferenciaUsuario { get; set; }
     }

@@ -2,60 +2,85 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.Cadastro"
-             Title="Cadastro">
-    <VerticalStackLayout
-        VerticalOptions="Center"
-        Padding="30,0"
-        Spacing="25">
+             Title="Cadastro"
+             BackgroundColor="#EAF4FF">
 
-        <Label 
-            Text="Registro de usuário" 
-            Style="{StaticResource Headline}"    
-        />
-        <Label
-             Text="Crie uma conta para iniciar"
-             Style="{StaticResource SubHeadline}"
-        />
-        
-        <Label
-             Text="Nome"
-        />
-        <Entry                
-            MaxLength="120"
-            x:Name="Nome"
-            Placeholder="Nome completo"
-        />
-        
-        <Label
-             Text="E-mail"
-        />
-        <Entry                
-            MaxLength="60"
-            x:Name="Email"
-            Placeholder="Informe seu e-mail"
-        />
-        
-        <Label
-             Text="Senha"
-        />
-        <Entry                
-            MaxLength="20"
-            x:Name="Senha"
-            Placeholder="Informe sua senha"
-            IsPassword="True"
-        />
-        <Entry                
-            MaxLength="20"
-            x:Name="ConfirmacaoSenha"
-            Placeholder="Confirme sua senha"
-            IsPassword="True"
-        />
+    <Grid Padding="24">
+        <!-- Main content -->
+        <ScrollView>
+            <VerticalStackLayout
+                VerticalOptions="Center"
+                Spacing="16">
 
-        <Button
-            x:Name="btnJaTenhoConta"
-            Text="Já tenho uma conta" 
-            Clicked="BotaoJaTenhoConta_Clicked"
-            HorizontalOptions="Fill"
-        />  
-    </VerticalStackLayout>
+                <Label 
+                    Text="Registro de usuário" 
+                    Style="{StaticResource Headline}"
+                    Padding="0 0 10 0"
+                />
+                <Label
+                     Text="Crie uma conta para iniciar"
+                     Style="{StaticResource SubHeadline}"
+                     Padding="0 0 30 0"
+                />
+
+                <Border Stroke="#D6DCE6" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#FFFFFF" Padding="0">
+                    <Entry x:Name="Nome" Placeholder="Nome completo" MaxLength="120" TextChanged="Nome_TextChanged" Margin="8" />
+                </Border>
+                <Label x:Name="NomeError" TextColor="#D9534F" FontSize="12" IsVisible="False" />
+
+                <Border Stroke="#D6DCE6" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#FFFFFF" Padding="0">
+                    <Entry x:Name="Email" Placeholder="Informe seu e-mail" MaxLength="60" Keyboard="Email" TextChanged="Email_TextChanged" Margin="8" />
+                </Border>
+                <Label x:Name="EmailError" TextColor="#D9534F" FontSize="12" IsVisible="False" />
+
+                <Border Stroke="#D6DCE6" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#FFFFFF" Padding="0">
+                    <Entry x:Name="Senha" Placeholder="Informe sua senha" MaxLength="50" IsPassword="True" TextChanged="Senha_TextChanged" Margin="8" />
+                </Border>
+                <Label x:Name="SenhaError" TextColor="#D9534F" FontSize="12" IsVisible="False" />
+
+                <Border Stroke="#D6DCE6" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#FFFFFF" Padding="0">
+                    <Entry x:Name="ConfirmacaoSenha" Placeholder="Confirme sua senha" MaxLength="50" IsPassword="True" TextChanged="ConfirmacaoSenha_TextChanged" Margin="8"/>
+                </Border>
+                <Label x:Name="ConfirmacaoError" TextColor="#D9534F" FontSize="12" IsVisible="False" />
+
+                <Button
+                    x:Name="btnRegistrar"
+                    Text="Realizar cadastro"
+                    Clicked="BotaoRegistrar_Clicked"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="#3F2970"
+                    TextColor="White"
+                    CornerRadius="24"
+                    HeightRequest="48"
+                    FontAttributes="Bold"
+                    IsEnabled="False" 
+                />
+
+                <Button
+                    x:Name="btnJaTenhoConta"
+                    Text="Já tenho uma conta" 
+                    Clicked="BotaoJaTenhoConta_Clicked"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="Transparent"
+                    TextColor="#3F2970"
+                />
+                <!-- Loading overlay -->
+                <Frame x:Name="LoadingOverlay"
+                       BackgroundColor="#80000000"
+                       CornerRadius="0"
+                       HasShadow="False"
+                       IsVisible="False"
+                       Padding="0"
+                       VerticalOptions="Fill"
+                       HorizontalOptions="Fill">
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                        <ActivityIndicator x:Name="Loader" IsRunning="True" Color="White" WidthRequest="48" HeightRequest="48" />
+                        <Label Text="Aguarde, salvando..." TextColor="White" />
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
 </ContentPage>
