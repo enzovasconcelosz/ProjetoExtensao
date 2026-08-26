@@ -4,7 +4,11 @@
     {
         public App()
         {
+            TratamentoErros.Registrar();
+
             InitializeComponent();
+
+            Tema.Aplicar();
 
             MainPage = new AppShell();
         }

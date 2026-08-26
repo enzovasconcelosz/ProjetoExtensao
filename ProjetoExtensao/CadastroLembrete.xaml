@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.CadastroLembrete"
+             Title="Cadastro de lembrete"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <Grid Padding="20,14" RowDefinitions="Auto,*,Auto" RowSpacing="16">
+
+        <!-- Cabecalho -->
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button Grid.Column="0"
+                    Text="‹"
+                    FontSize="28"
+                    BackgroundColor="Transparent"
+                    Padding="0"
+                    WidthRequest="44"
+                    Clicked="BtnCancelar_Clicked"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <Label x:Name="lblTitulo"
+                   Grid.Column="1"
+                   Text="Cadastro de lembrete"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
+        </Grid>
+
+        <!-- Formulario -->
+        <ScrollView Grid.Row="1">
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    VerticalOptions="Start"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Nome do lembrete"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    <Border Stroke="{StaticResource PaletaNeutro}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            BackgroundColor="Transparent"
+                            Padding="0">
+                        <Entry x:Name="entryNome"
+                               Placeholder="Ex.: Oncologista"
+                               MaxLength="100"
+                               Margin="10,4" />
+                    </Border>
+
+                    <Label Text="Tipo de lembrete"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           Margin="0,8,0,0"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    <Border Stroke="{StaticResource PaletaNeutro}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            BackgroundColor="Transparent"
+                            Padding="0">
+                        <Picker x:Name="pickerTipo"
+                                Title="Selecione o tipo"
+                                ItemDisplayBinding="{Binding Nome}"
+                                Margin="10,4"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                    </Border>
+
+                    <Label Text="Data e hora do lembrete"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           Margin="0,8,0,0"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Border Stroke="{StaticResource PaletaNeutro}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 14"
+                                BackgroundColor="Transparent"
+                                Padding="0">
+                            <DatePicker x:Name="pickerData"
+                                        Format="dd/MM/yyyy"
+                                        Margin="10,4"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                        </Border>
+                        <Border Grid.Column="1"
+                                Stroke="{StaticResource PaletaNeutro}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 14"
+                                BackgroundColor="Transparent"
+                                Padding="0">
+                            <TimePicker x:Name="pickerHora"
+                                        Format="HH:mm"
+                                        Margin="10,4"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Descrição do lembrete"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           Margin="0,8,0,0"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    <Border Stroke="{StaticResource PaletaNeutro}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            BackgroundColor="Transparent"
+                            Padding="0">
+                        <Editor x:Name="editorDescricao"
+                                Placeholder="Ex.: Retorno oncologista com a Dra. Angelica Bezerra."
+                                HeightRequest="110"
+                                Margin="10,4" />
+                    </Border>
+
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+
+        <!-- Acoes -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Button Text="Cancelar"
+                    Clicked="BtnCancelar_Clicked"
+                    BackgroundColor="Transparent"
+                    BorderWidth="1"
+                    BorderColor="{StaticResource PaletaAzulEscuro}"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+
+            <Button Grid.Column="1"
+                    Text="Confirmar"
+                    Clicked="BtnSalvar_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

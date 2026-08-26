@@ -17,6 +17,13 @@ namespace ProjetoExtensao.WinUI
         public App()
         {
             this.InitializeComponent();
+
+            // Impede que uma excecao nao tratada encerre o aplicativo no Windows
+            this.UnhandledException += (_, e) =>
+            {
+                e.Handled = true;
+                TratamentoErros.Tratar(e.Exception, "WinUI");
+            };
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

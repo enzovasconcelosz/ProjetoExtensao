@@ -1,89 +1,196 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ProjetoExtensao.TelaInicial"
-             Title="TelaInicial"
-             BackgroundColor="#EAF4FF">
-
-    <VerticalStackLayout Margin="10">
-        <HorizontalStackLayout>
-            <Frame
-                WidthRequest="60"
-                HeightRequest="60"
-                CornerRadius="30"
-                BackgroundColor="AliceBlue"
-                HorizontalOptions="Start"
-                Margin="20 0">
-                <ImageButton Source="dotnet_bot.png"
-                             BackgroundColor="Transparent"
-                             Clicked="BotaoConfiguracoes_Clicked"
-                             WidthRequest="64"
-                             HeightRequest="64" />
-            </Frame>
-
-            <Label x:Name="lblBoasVindas"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                   VerticalOptions="Center"
-                   TextColor="Black"
-                   Padding="10"/>
-        </HorizontalStackLayout>
-
-        <Frame BackgroundColor="MediumPurple" CornerRadius="14" Padding="10" HasShadow="False" Margin="0 0 10 0">
-            <CollectionView x:Name="WeekCollection"
-                            ItemsSource="{Binding WeekDays}"
-                            SelectionMode="Single"
-                            HeightRequest="86"
-                            ItemsLayout="HorizontalList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="6" WidthRequest="68">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <Label Text="{Binding ShortName}" FontSize="11" HorizontalOptions="Center" Opacity="1" TextColor="AliceBlue" />
-
-                            <Frame Grid.Row="1"
-                                       HeightRequest="35"
-                                       WidthRequest="35"
-                                       CornerRadius="15"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"
-                                       BackgroundColor="#3F2970"
-                                       HasShadow="False">
-                                <Label Text="{Binding DayNumber}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Black" FontAttributes="Bold" FontSize="16" />
-                            </Frame>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Frame>
-
-        <!-- Próximo evento -->
-        <Frame BackgroundColor="MediumPurple" HeightRequest="330" CornerRadius="15" Padding="15" HasShadow="False" Margin="0 0 10 0">
-            <VerticalStackLayout Spacing="8">
-                <Label Text="Próximo evento em" FontAttributes="Bold" />
-                <Label x:Name="lblDiasProximoEvento" Text="6 Dias" FontSize="20" FontAttributes="Bold" />
-
-                <Grid ColumnDefinitions="*,80" RowDefinitions="Auto,Auto" ColumnSpacing="8">
-                    <Label Text="Consulta - Oncologista" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" />
-                    <Image Source="placeholder_image.png" Grid.RowSpan="2" Grid.Column="1" WidthRequest="56" HeightRequest="56" Aspect="AspectFill" />
-
-                    <Label Text="Retorno oncologista Dra. Angelica Bezerra" Grid.Row="1" Grid.Column="0" LineBreakMode="TailTruncation" />
-                </Grid>
-            </VerticalStackLayout>
-        </Frame>
-
-        <!-- Dica de hoje -->
-        <Frame BackgroundColor="MediumPurple" CornerRadius="15" Padding="15" HasShadow="False">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Dica de hoje!" FontAttributes="Bold" TextColor="AliceBlue" FontSize="22"/>
-                <Label Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal." LineBreakMode="WordWrap" TextColor="AliceBlue" />
-                <Button Text="Clique aqui e saiba mais" BackgroundColor="MediumPurple" TextColor="AliceBlue" CornerRadius="8" WidthRequest="200" />
-            </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
-
-</ContentPage>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.TelaInicial"
+             Title="TelaInicial"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18,12" Spacing="16">
+
+            <!-- Cabecalho: avatar (perfil) + saudacao + menu de tres linhas -->
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+                <Border Grid.Column="0"
+                        WidthRequest="52"
+                        HeightRequest="52"
+                        StrokeThickness="0"
+                        BackgroundColor="{StaticResource PaletaAzul}"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="26" />
+                    </Border.StrokeShape>
+                    <ImageButton x:Name="btnPerfil"
+                                 Source="dotnet_bot.png"
+                                 Aspect="AspectFill"
+                                 BackgroundColor="Transparent"
+                                 Clicked="BotaoPerfil_Clicked" />
+                </Border>
+
+                <Label x:Name="lblBoasVindas"
+                       Grid.Column="1"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                <!-- Botao de tres linhas (menu) -->
+                <Grid Grid.Column="2"
+                      x:Name="MenuHamburguer"
+                      WidthRequest="44"
+                      HeightRequest="44"
+                      RowDefinitions="3,3,3"
+                      RowSpacing="6"
+                      Padding="10,13"
+                      VerticalOptions="Center">
+                    <BoxView Grid.Row="0" CornerRadius="2"
+                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                    <BoxView Grid.Row="1" CornerRadius="2"
+                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                    <BoxView Grid.Row="2" CornerRadius="2"
+                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="BotaoMenu_Tapped" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
+
+            <!-- Faixa da semana -->
+            <CollectionView x:Name="WeekCollection"
+                            ItemsSource="{Binding WeekDays}"
+                            SelectionMode="Single"
+                            HeightRequest="72"
+                            ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="4,0" WidthRequest="48" RowDefinitions="Auto,*" RowSpacing="6">
+                            <!-- Remove o destaque roxo padrao da selecao; o dia atual
+                                 ja se distingue pelo proprio circulo preenchido -->
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Label Text="{Binding ShortName}"
+                                   FontSize="11"
+                                   HorizontalOptions="Center"
+                                   TextColor="{Binding LabelColor}" />
+
+                            <Border Grid.Row="1"
+                                    HeightRequest="38"
+                                    WidthRequest="38"
+                                    StrokeThickness="0"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Start"
+                                    BackgroundColor="{Binding CircleColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="19" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding DayNumber}"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       TextColor="{Binding NumberColor}"
+                                       FontAttributes="Bold"
+                                       FontSize="15" />
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Proximo lembrete em -->
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Próximo lembrete em"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                    <Label x:Name="lblDiasProximoLembrete"
+                           Text="6 Dias"
+                           FontSize="15"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Detalhe do lembrete -->
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="*,64" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="6">
+                    <Label Text="Consulta - Oncologista"
+                           Grid.Row="0" Grid.Column="0"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                    <Label Text="Retorno oncologista Dra. Angelica Bezerra"
+                           Grid.Row="1" Grid.Column="0"
+                           FontSize="14"
+                           LineBreakMode="WordWrap"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                    <Border Grid.RowSpan="2" Grid.Column="1"
+                            StrokeThickness="0"
+                            WidthRequest="56"
+                            HeightRequest="56"
+                            VerticalOptions="Start"
+                            BackgroundColor="{StaticResource PaletaAzulClaro}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Image Source="placeholder_image.png"
+                               Aspect="AspectFill"
+                               WidthRequest="56"
+                               HeightRequest="56" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Dica de hoje -->
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Dica de hoje!"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                    <Label Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal."
+                           LineBreakMode="WordWrap"
+                           FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    <Button Text="Clique aqui e saiba mais"
+                            BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                            TextColor="White"
+                            FontSize="13"
+                            CornerRadius="18"
+                            HeightRequest="38"
+                            Padding="18,0"
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

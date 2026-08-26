@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+Ôªøusing Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 
 namespace ProjetoExtensao;
@@ -13,19 +13,40 @@ public partial class Configuracoes : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        Tema.Aplicar();
+
         string? UsuarioLogado = await SecureStorage.Default.GetAsync("UsuarioLogado");
+        if (string.IsNullOrWhiteSpace(UsuarioLogado))
+            UsuarioLogado = Preferences.Default.Get("PerfilNome", "Usu√°rio");
+
         lblUsuarioLogado.Text = UsuarioLogado;
     }
 
     private async void BotaoSair_Clicked(object sender, EventArgs e)
     {
-        bool confirmacao = await DisplayAlertAsync("Tem certeza?", "Deseja realmente desconectar do aplicativo?", "Sim", "N„o");
+        bool confirmacao = await DisplayAlertAsync("Tem certeza?", "Deseja realmente desconectar do aplicativo?", "Sim", "N√£o");
 
         if (confirmacao)
         {
             SecureStorage.Default.Remove("UsuarioLogado");
             App.Current.MainPage = new Login();
         }
+    }
+
+    private void BotaoPerfil_Clicked(object sender, EventArgs e)
+    {
+        // Aberta a partir daqui, a tela de perfil volta para as configuracoes
+        App.Current.MainPage = new ConfiguracoesUsuario(() => new Configuracoes());
+    }
+
+    private void BtnLembretes_Clicked(object sender, EventArgs e)
+    {
+        App.Current.MainPage = new Lembretes();
+    }
+
+    private void BotaoAparencia_Clicked(object sender, EventArgs e)
+    {
+        App.Current.MainPage = new ConfiguracoesAparencia();
     }
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
@@ -40,11 +61,11 @@ public partial class Configuracoes : ContentPage
         }
     }
 
-    private async void BtnTipoEventos_Clicked(object sender, EventArgs e)
+    private async void BtnTipoLembretes_Clicked(object sender, EventArgs e)
     {
         try
         {
-            App.Current.MainPage = new TipoEventos();
+            App.Current.MainPage = new TipoLembretes();
         }
         catch
         {
@@ -52,14 +73,14 @@ public partial class Configuracoes : ContentPage
         }
         //try
         //{
-        //    var svc = Application.Current?.Handler?.MauiContext?.Services?.GetService<ProjetoExtensao.Application.Interfaces.ITipoEventoService>();
+        //    var svc = Application.Current?.Handler?.MauiContext?.Services?.GetService<ProjetoExtensao.Application.Interfaces.ITipoLembreteService>();
         //    if (svc == null)
         //    {
-        //        await DisplayAlert("Erro", "ServiÁo de tipo de eventos n„o disponÌvel.", "OK");
+        //        await DisplayAlert("Erro", "Servi√ßo de tipo de lembretes n√£o dispon√≠vel.", "OK");
         //        return;
         //    }
 
-        //    var pagina = new TipoEventos(svc);
+        //    var pagina = new TipoLembretes(svc);
         //    await Navigation.PushAsync(pagina);
         //}
         //catch (Exception ex)

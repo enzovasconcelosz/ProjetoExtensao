@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.ConfiguracoesAparencia"
+             Title="Aparência"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,14" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0"
+                        Text="‹"
+                        FontSize="28"
+                        BackgroundColor="Transparent"
+                        Padding="0"
+                        WidthRequest="44"
+                        Clicked="BotaoVoltar_Clicked"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <Label Grid.Column="1"
+                       Text="Aparência"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
+            </Grid>
+
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Tema do aplicativo"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                    <Label Text="A mudança é aplicada na hora e fica salva neste dispositivo."
+                           FontSize="13"
+                           TextColor="{StaticResource PaletaNeutro}" />
+
+                    <Picker x:Name="pickerTema"
+                            Title="Selecione o tema"
+                            SelectedIndexChanged="PickerTema_SelectedIndexChanged"
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Sistema</x:String>
+                                <x:String>Claro</x:String>
+                                <x:String>Escuro</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Concluir"
+                    Clicked="BotaoVoltar_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

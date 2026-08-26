@@ -1,82 +1,89 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.Login"
-             BackgroundColor="#EAF4FF">
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
 
     <ScrollView>
-        <VerticalStackLayout BackgroundColor="#EAF4FF" 
-                             Padding="24" 
-                             Spacing="16"
+        <VerticalStackLayout Padding="24"
+                             Spacing="14"
                              VerticalOptions="Center">
 
-        <Label 
-                Text="Olá!" FontSize="28" 
-                   FontAttributes="Bold" 
-                   TextColor="#0B2A4A" />
+            <Label Text="Olá!"
+                   Style="{StaticResource Headline}"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   HorizontalTextAlignment="Start" />
 
-        <Label Text="Acesse sua conta" FontSize="14" TextColor="#556B88" />
+            <Label Text="Acesse sua conta"
+                   Style="{StaticResource SubHeadline}"
+                   FontSize="16"
+                   HorizontalOptions="Start"
+                   HorizontalTextAlignment="Start"
+                   Margin="0,0,0,10" />
 
-        <Border Stroke="#D6DCE6" 
-                    StrokeThickness="1" 
-                    StrokeShape="RoundRectangle 12"
-                    BackgroundColor="#FFFFFF">
-            <Entry x:Name="Usuario"
-                           Placeholder="E-mail"
-                           TextColor="#333"
+            <Border Stroke="{StaticResource PaletaNeutro}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}"
+                    Padding="0">
+                <Entry x:Name="Usuario"
+                       Placeholder="E-mail"
+                       Keyboard="Email"
+                       BackgroundColor="Transparent"
+                       Margin="10,4"
+                       MaxLength="100" />
+            </Border>
+
+            <Border Stroke="{StaticResource PaletaNeutro}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}"
+                    Padding="0">
+                <Grid ColumnDefinitions="*,44">
+                    <Entry x:Name="Senha"
+                           IsPassword="True"
+                           Placeholder="Senha"
                            BackgroundColor="Transparent"
-                           Margin="8"
-                           MaxLength="100" />
-        </Border>
+                           Margin="10,4" />
+                    <Button Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            WidthRequest="15" HeightRequest="15"
+                            HorizontalOptions="Center" VerticalOptions="Center"
+                            ImageSource="eye-icon.svg"
+                            Clicked="TogglePasswordVisibility_Clicked"
+                            AutomationId="PasswordToggle" />
+                </Grid>
+            </Border>
 
-        <Border Stroke="#D6DCE6" 
-                    StrokeThickness="1" 
-                    StrokeShape="RoundRectangle 12"
-                    BackgroundColor="#FFFFFF">
-            <Grid ColumnDefinitions="*,40" 
-                      Padding="0">
-                <Entry x:Name="Senha"
-                               IsPassword="True"
-                               Placeholder="Senha"
-                               TextColor="#333"
-                               BackgroundColor="Transparent"
-                               Margin="8" />
-                <Button Grid.Column="1"
-                                BackgroundColor="Transparent"
-                                WidthRequest="15" HeightRequest="15"
-                                HorizontalOptions="Center" VerticalOptions="Center"
-                                ImageSource="eye-icon.svg"
-                                Clicked="TogglePasswordVisibility_Clicked"
-                                AutomationId="PasswordToggle" />
-            </Grid>
-        </Border>
+            <Button x:Name="btnEsqueceuSenha"
+                    Text="Esqueci minha senha"
+                    Clicked="BotaoEsqueceuSenha_Clicked"
+                    BackgroundColor="Transparent"
+                    FontSize="14"
+                    TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}"
+                    HorizontalOptions="Center"
+                    Padding="0" />
 
-        <Button x:Name="btnEsqueceuSenha"
-                        Text="Esqueci minha senha"
-                        Clicked="BotaoEsqueceuSenha_Clicked"
-                        BackgroundColor="Transparent"
-                        TextColor="#3F2970"
-                        HorizontalOptions="Center"
-                        Padding="0" />
+            <Button x:Name="btnLogin"
+                    Text="Login"
+                    Clicked="BotaoLogin_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                    TextColor="White"
+                    CornerRadius="24"
+                    HeightRequest="48"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Fill" />
 
-        <Button x:Name="btnLogin"
-                        Text="Login"
-                        Clicked="BotaoLogin_Clicked"
-                        BackgroundColor="#3F2970"
-                        TextColor="White"
-                        CornerRadius="24"
-                        HeightRequest="48"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Fill" />
+            <Button x:Name="btnCadastrar"
+                    Text="Cadastre-se"
+                    Clicked="BotaoCadastrar_Clicked"
+                    BackgroundColor="Transparent"
+                    FontSize="14"
+                    TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}"
+                    HorizontalOptions="Center" />
 
-        <Button x:Name="btnCadastrar"
-                        Text="Cadastre-se"
-                        Clicked="BotaoCadastrar_Clicked"
-                        BackgroundColor="Transparent"
-                        TextColor="#3F2970"
-                        HorizontalOptions="Center" />
-
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

@@ -19,6 +19,7 @@ public partial class Cadastro : ContentPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
+		Tema.Aplicar();
 		UpdateValidationState();
 	}
 
@@ -30,7 +31,7 @@ public partial class Cadastro : ContentPage
     private async void BotaoRegistrar_Clicked(object sender, EventArgs e)
 	{
         // Mostrar loadmask imediatamente ao clicar
-		var overlayStart = this.FindByName<Frame>("LoadingOverlay");
+		var overlayStart = this.FindByName<Border>("LoadingOverlay");
 		if (overlayStart != null) overlayStart.IsVisible = true;
 
 		// Marcar que o usuário tentou submeter para exibir erros visuais caso haja problemas
@@ -75,14 +76,8 @@ public partial class Cadastro : ContentPage
 		{
             // (overlay já exibido no início do clique)
 
-			// Cria contexto com a mesma connection string usada no MauiProgram
-			var connectionString = @"Server=192.168.1.4,1433;Database=NaoMeEsquece;User Id=sa;Password=123456;Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;Connection Timeout=10;";
-
-			var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<Infrastructure.Data.AppDbContext>()
-				.UseSqlServer(connectionString)
-				.Options;
-
-			using var context = new Infrastructure.Data.AppDbContext(options);
+			// Usa a conexao central do projeto (banco NaoMeEsquece)
+			using var context = Infrastructure.Data.Conexao.CriarContexto();
 
 			// Verifica se já existe usuário com o mesmo login (e-mail)
 			var existe = await context.Usuarios.AnyAsync(u => u.Login == email);
@@ -109,7 +104,7 @@ public partial class Cadastro : ContentPage
 		}
 		finally
 		{
-            var overlay2 = this.FindByName<Frame>("LoadingOverlay");
+            var overlay2 = this.FindByName<Border>("LoadingOverlay");
 			if (overlay2 != null) overlay2.IsVisible = false;
 		}
 	}
@@ -167,6 +162,15 @@ public partial class Cadastro : ContentPage
 		UpdateValidationState();
 	}
 
+	// Cores de validacao alinhadas a paleta padrao do projeto.
+	// A cor normal acompanha o tema para o texto nunca ficar escuro sobre fundo escuro.
+	private static readonly Color CorTextoErro = Color.FromArgb("#D9534F");
+
+	private static Color CorTextoNormal =>
+		Microsoft.Maui.Controls.Application.Current?.RequestedTheme == AppTheme.Dark
+			? Color.FromArgb("#EDF3F8")
+			: Color.FromArgb("#33343B");
+
 	private void UpdateValidationState(bool forceShow = false)
 	{
       var nomeEntry = this.FindByName<Entry>("Nome");
@@ -202,7 +206,7 @@ public partial class Cadastro : ContentPage
 			nomeLbl.Text = nomeValido ? string.Empty : "Nome deve ter mais de 3 caracteres.";
 		}
 		if (nomeEntry != null)
-			nomeEntry.TextColor = (_nomeTouched || forceShow) ? (nomeValido ? Colors.Black : Colors.Red) : Colors.Black;
+			nomeEntry.TextColor = (_nomeTouched || forceShow) ? (nomeValido ? CorTextoNormal : CorTextoErro) : CorTextoNormal;
 
 		if (emailLbl != null)
 		{
@@ -210,7 +214,7 @@ public partial class Cadastro : ContentPage
 			emailLbl.Text = emailValido ? string.Empty : "E-mail inválido.";
 		}
 		if (emailEntry != null)
-			emailEntry.TextColor = (_emailTouched || forceShow) ? (emailValido ? Colors.Black : Colors.Red) : Colors.Black;
+			emailEntry.TextColor = (_emailTouched || forceShow) ? (emailValido ? CorTextoNormal : CorTextoErro) : CorTextoNormal;
 
 		if (senhaLbl != null)
 		{
@@ -218,7 +222,7 @@ public partial class Cadastro : ContentPage
 			senhaLbl.Text = senhaValida ? string.Empty : "Senha deve ter ao menos 6 caracteres.";
 		}
 		if (senhaEntry != null)
-			senhaEntry.TextColor = (_senhaTouched || forceShow) ? (senhaValida ? Colors.Black : Colors.Red) : Colors.Black;
+			senhaEntry.TextColor = (_senhaTouched || forceShow) ? (senhaValida ? CorTextoNormal : CorTextoErro) : CorTextoNormal;
 
 		if (confirmLbl != null)
 		{
@@ -226,7 +230,7 @@ public partial class Cadastro : ContentPage
 			confirmLbl.Text = confirmacaoValida ? string.Empty : "Confirmação de senha não confere.";
 		}
 		if (confirmEntry != null)
-			confirmEntry.TextColor = (_confirmTouched || forceShow) ? (confirmacaoValida ? Colors.Black : Colors.Red) : Colors.Black;
+			confirmEntry.TextColor = (_confirmTouched || forceShow) ? (confirmacaoValida ? CorTextoNormal : CorTextoErro) : CorTextoNormal;
 
 		if (registrarBtn != null)
 			registrarBtn.IsEnabled = nomeValido && emailValido && senhaValida && confirmacaoValida;

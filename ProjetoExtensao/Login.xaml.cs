@@ -9,6 +9,12 @@ public partial class Login : ContentPage
         InitializeComponent();
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Tema.Aplicar();
+    }
+
     private void BotaoEsqueceuSenha_Clicked(object sender, EventArgs e)
     {
         App.Current.MainPage = new EsqueceuSenha();
