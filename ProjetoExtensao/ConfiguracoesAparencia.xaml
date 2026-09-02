@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.ConfiguracoesAparencia"
@@ -55,6 +55,54 @@
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Acessibilidade -->
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Acessibilidade"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                    <Label Text="Tamanho da fonte"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                    <Label Text="Vale para todas as telas do aplicativo."
+                           FontSize="13"
+                           TextColor="{StaticResource PaletaNeutro}" />
+
+                    <Picker x:Name="pickerTamanhoFonte"
+                            Title="Selecione o tamanho"
+                            SelectedIndexChanged="PickerTamanhoFonte_SelectedIndexChanged"
+                            HeightRequest="44"
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                    <!-- Amostra: acompanha o tamanho escolhido na hora -->
+                    <Border Stroke="{StaticResource PaletaNeutro}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="Transparent"
+                            Padding="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label x:Name="lblAmostraTitulo"
+                                   Text="Consulta - Oncologista"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                            <Label x:Name="lblAmostraTexto"
+                                   Text="Assim ficará o texto dos seus lembretes."
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                        </VerticalStackLayout>
+                    </Border>
                 </VerticalStackLayout>
             </Border>
 

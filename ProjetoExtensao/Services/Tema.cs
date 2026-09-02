@@ -18,7 +18,15 @@ public static class Tema
         set => Preferences.Default.Set(Chave, value);
     }
 
-    public static void Aplicar() => Aplicar(Atual);
+    /// <summary>
+    /// Chamado no OnAppearing de cada tela: alem do tema, reaplica o tamanho
+    /// de fonte escolhido no painel de acessibilidade.
+    /// </summary>
+    public static void Aplicar()
+    {
+        Aplicar(Atual);
+        Acessibilidade.AplicarNaPaginaAtual();
+    }
 
     public static void Aplicar(string tema)
     {

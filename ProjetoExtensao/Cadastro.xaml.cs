@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 using Microsoft.Maui.Graphics;
 
 namespace ProjetoExtensao;
@@ -88,7 +87,7 @@ public partial class Cadastro : ContentPage
 			}
 
             // Cria entidade e salva (senha com hash)
-			var senhaHash = HashPassword(senha);
+			var senhaHash = SenhaHash.Gerar(senha);
 			var usuario = new Entities.Usuario(email, senhaHash, nome);
 			await context.Usuarios.AddAsync(usuario);
 			await context.SaveChangesAsync();
@@ -120,22 +119,6 @@ public partial class Cadastro : ContentPage
 		{
 			return false;
 		}
-	}
-
-	private string HashPassword(string password)
-	{
-		// PBKDF2 com SHA256
-		var salt = new byte[16];
-		using (var rng = RandomNumberGenerator.Create())
-		{
-			rng.GetBytes(salt);
-		}
-
-		const int iterations = 100000;
-		using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
-		var hash = pbkdf2.GetBytes(32);
-
-		return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}.{iterations}";
 	}
 
     private void Nome_TextChanged(object sender, TextChangedEventArgs e)

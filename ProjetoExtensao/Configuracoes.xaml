@@ -36,7 +36,8 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="48" />
                     </Border.StrokeShape>
-                    <ImageButton Source="dotnet_bot.png"
+                    <ImageButton x:Name="imgPerfil"
+                                 Source="dotnet_bot.png"
                                  Aspect="AspectFill"
                                  BackgroundColor="Transparent"
                                  Clicked="BotaoPerfil_Clicked" />
@@ -76,7 +77,6 @@
                         </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-
                     <Grid Padding="12" ColumnDefinitions="*,Auto">
                         <Label Text="Lembretes"
                                VerticalOptions="Center"
@@ -89,17 +89,18 @@
                         </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-
                     <Grid Padding="12" ColumnDefinitions="*,Auto">
-                        <Label Text="Notificação"
+                        <Label Text="Calendário"
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                         <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
                                TextColor="{StaticResource PaletaNeutro}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BtnCalendario_Clicked" />
+                        </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-
                     <Grid Padding="12" ColumnDefinitions="*,Auto">
                         <Label Text="Aparência"
                                VerticalOptions="Center"
@@ -110,16 +111,6 @@
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BotaoAparencia_Clicked" />
                         </Grid.GestureRecognizers>
-                    </Grid>
-                    <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-
-                    <Grid Padding="12" ColumnDefinitions="*,Auto">
-                        <Label Text="Privacidade e segurança"
-                               VerticalOptions="Center"
-                               FontSize="16"
-                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-                        <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
-                               TextColor="{StaticResource PaletaNeutro}" />
                     </Grid>
 
                 </VerticalStackLayout>

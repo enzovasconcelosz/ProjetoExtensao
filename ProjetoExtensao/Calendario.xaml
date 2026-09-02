@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.Calendario"
+             Title="Calendário"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <Grid Padding="20,14" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+
+        <!-- Cabecalho -->
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button Grid.Column="0"
+                    Text="‹"
+                    FontSize="28"
+                    BackgroundColor="Transparent"
+                    Padding="0"
+                    WidthRequest="44"
+                    Clicked="BotaoVoltar_Clicked"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <Label Grid.Column="1"
+                   Text="Calendário"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
+        </Grid>
+
+        <!-- Calendario -->
+        <Border Grid.Row="1"
+                StrokeThickness="0"
+                Padding="16"
+                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout Spacing="12">
+
+                <!-- Mes e navegacao -->
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4">
+                    <Label x:Name="lblMes"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                    <Button Grid.Column="1"
+                            Text="‹"
+                            FontSize="22"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            Clicked="BotaoMesAnterior_Clicked"
+                            TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+
+                    <Button Grid.Column="2"
+                            Text="›"
+                            FontSize="22"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            Clicked="BotaoProximoMes_Clicked"
+                            TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+                </Grid>
+
+                <!-- Cabecalho dos dias da semana, comecando no domingo -->
+                <Grid x:Name="GradeSemana"
+                      ColumnDefinitions="*,*,*,*,*,*,*" />
+
+                <!-- Dias do mes, montados no code-behind -->
+                <Grid x:Name="GradeDias"
+                      ColumnDefinitions="*,*,*,*,*,*,*"
+                      RowDefinitions="40,40,40,40,40,40"
+                      RowSpacing="4" />
+
+                <Label Text="Toque em um dia a partir de hoje para cadastrar um lembrete nessa data."
+                       FontSize="12"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource PaletaNeutro}" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+
+</ContentPage>

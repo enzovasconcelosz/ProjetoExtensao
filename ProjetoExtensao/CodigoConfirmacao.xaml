@@ -2,46 +2,86 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.CodigoConfirmacao"
-             BackgroundColor="#EAF4FF">
-
+             Title="Código de acesso"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
 
     <ScrollView>
-        <VerticalStackLayout BackgroundColor="#EAF4FF"
-                             Padding="24"
-                             Spacing="16"
+        <VerticalStackLayout Padding="24"
+                             Spacing="14"
                              VerticalOptions="Center">
 
-            <Label Text="Informe o código de acesso"
-                   FontSize="20"
+            <Label Text="Código de acesso"
+                   Style="{StaticResource Headline}"
                    FontAttributes="Bold"
-                   TextColor="#0B2A4A"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Start"
+                   HorizontalTextAlignment="Start" />
 
-            <Border Stroke="#D6DCE6"
+            <Label x:Name="lblInstrucao"
+                   Style="{StaticResource SubHeadline}"
+                   FontSize="16"
+                   HorizontalOptions="Start"
+                   HorizontalTextAlignment="Start"
+                   Margin="0,0,0,10" />
+
+            <Border Stroke="{StaticResource PaletaNeutro}"
                     StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12"
-                    BackgroundColor="#FFFFFF">
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}"
+                    Padding="0">
                 <Entry x:Name="CodigoEntry"
-                       Placeholder="Código"
+                       Placeholder="000000"
                        Keyboard="Numeric"
-                       Margin="8"
-                       MaxLength="6" />
+                       MaxLength="6"
+                       FontSize="22"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="Transparent"
+                       Margin="10,6" />
             </Border>
+
+            <Label x:Name="lblAviso"
+                   FontSize="13"
+                   IsVisible="False"
+                   TextColor="#D9534F" />
 
             <Button x:Name="btnConfirmarCodigo"
                     Text="Confirmar"
-                    BackgroundColor="#3F2970"
+                    Clicked="BtnConfirmarCodigo_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
                     TextColor="White"
                     CornerRadius="24"
                     HeightRequest="48"
                     FontAttributes="Bold"
-                    Clicked="BtnConfirmarCodigo_Clicked" />
+                    Margin="0,6,0,0" />
+
+            <Button x:Name="btnReenviar"
+                    Text="Reenviar código"
+                    Clicked="BtnReenviar_Clicked"
+                    BackgroundColor="Transparent"
+                    FontSize="14"
+                    TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}"
+                    HorizontalOptions="Center" />
 
             <Button x:Name="btnCancelar"
                     Text="Cancelar"
+                    Clicked="BtnCancelar_Clicked"
                     BackgroundColor="Transparent"
-                    TextColor="#3F2970"
-                    Clicked="BtnCancelar_Clicked" />
+                    FontSize="14"
+                    TextColor="{StaticResource PaletaNeutro}"
+                    HorizontalOptions="Center" />
+
+            <!-- Overlay de carregamento -->
+            <Border x:Name="LoadingOverlay"
+                    BackgroundColor="#8033343B"
+                    StrokeThickness="0"
+                    IsVisible="False"
+                    Padding="0"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill">
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                    <ActivityIndicator x:Name="Loader" IsRunning="False" Color="{StaticResource PaletaAzulClaro}" WidthRequest="48" HeightRequest="48" />
+                    <Label Text="Aguarde..." TextColor="{StaticResource PaletaAzulClaro}" />
+                </VerticalStackLayout>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

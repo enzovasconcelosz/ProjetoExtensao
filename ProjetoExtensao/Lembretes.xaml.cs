@@ -9,9 +9,13 @@ public partial class Lembretes : ContentPage
 {
     private ILembreteService? _service;
 
-    public Lembretes()
+    // Quem abriu a tela: o retorno volta para a mesma origem
+    private readonly Func<Page> _paginaAnterior;
+
+    public Lembretes(Func<Page>? paginaAnterior = null)
     {
         InitializeComponent();
+        _paginaAnterior = paginaAnterior ?? (() => new Configuracoes());
     }
 
     protected override async void OnAppearing()
@@ -65,13 +69,13 @@ public partial class Lembretes : ContentPage
 
     private void BtnAdicionar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new CadastroLembrete();
+        App.Current.MainPage = new CadastroLembrete(() => new Lembretes(_paginaAnterior));
     }
 
     private void BtnEditar_Clicked(object sender, EventArgs e)
     {
         if (sender is Button botao && botao.BindingContext is LembreteItem item)
-            App.Current.MainPage = new CadastroLembrete(item.Dto);
+            App.Current.MainPage = new CadastroLembrete(item.Dto, () => new Lembretes(_paginaAnterior));
     }
 
     private async void BtnExcluir_Clicked(object sender, EventArgs e)
@@ -86,6 +90,7 @@ public partial class Lembretes : ContentPage
         try
         {
             await _service.DeleteAsync(item.Dto.Id);
+            ImagemLembrete.Remover(item.Dto.Id);
             await CarregarLista();
         }
         catch (Exception ex)
@@ -96,7 +101,7 @@ public partial class Lembretes : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Configuracoes();
+        App.Current.MainPage = _paginaAnterior();
     }
 }
 

@@ -20,10 +20,24 @@ public partial class ConfiguracoesAparencia : ContentPage
         base.OnAppearing();
         Tema.Aplicar();
 
-        // Evita salvar durante a selecao inicial do valor atual
+        // Evita salvar durante a selecao inicial dos valores atuais
         _carregando = true;
+
         pickerTema.SelectedItem = Tema.Atual;
+
+        pickerTamanhoFonte.ItemsSource = Acessibilidade.Opcoes.Select(o => o.Nome).ToList();
+        pickerTamanhoFonte.SelectedItem = Acessibilidade.NomeAtual;
+
         _carregando = false;
+    }
+
+    private void PickerTamanhoFonte_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (_carregando || pickerTamanhoFonte.SelectedIndex < 0)
+            return;
+
+        var escolha = Acessibilidade.Opcoes[pickerTamanhoFonte.SelectedIndex];
+        Acessibilidade.Salvar(escolha.Tamanho);
     }
 
     private async void PickerTema_SelectedIndexChanged(object sender, EventArgs e)

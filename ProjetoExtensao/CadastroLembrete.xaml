@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjetoExtensao.CadastroLembrete"
@@ -28,97 +28,181 @@
             <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
         </Grid>
 
-        <!-- Formulario -->
-        <ScrollView Grid.Row="1">
-            <Border StrokeThickness="0"
-                    Padding="18"
-                    VerticalOptions="Start"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-                <VerticalStackLayout Spacing="8">
+        <!-- Formulario: ocupa a altura disponivel, com a descricao crescendo junto -->
+        <Border Grid.Row="1"
+                StrokeThickness="0"
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
 
-                    <Label Text="Nome do lembrete"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" RowSpacing="6">
+
+                <Label Grid.Row="0"
+                       Text="Nome do lembrete"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                <Border Grid.Row="1"
+                        Stroke="{StaticResource PaletaNeutro}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        BackgroundColor="Transparent"
+                        Padding="0">
+                    <Entry x:Name="entryNome"
+                           Placeholder="Ex.: Oncologista"
+                           MaxLength="100"
+                           Margin="10,4" />
+                </Border>
+
+                <Label Grid.Row="2"
+                       Text="Tipo de lembrete"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       Margin="0,8,0,0"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                <Border Grid.Row="3"
+                        Stroke="{StaticResource PaletaNeutro}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        BackgroundColor="Transparent"
+                        Padding="0">
+                    <Picker x:Name="pickerTipo"
+                            Title="Selecione o tipo"
+                            ItemDisplayBinding="{Binding Nome}"
+                            Margin="10,4"
+                            HeightRequest="44"
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                </Border>
+
+                <Label Grid.Row="4"
+                       Text="Data e hora do lembrete"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       Margin="0,8,0,0"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                <!-- Data e hora em linhas separadas: os controles nativos do
+                     Windows tem largura propria e, lado a lado, um corta o outro -->
+                <VerticalStackLayout Grid.Row="5" Spacing="8">
                     <Border Stroke="{StaticResource PaletaNeutro}"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 14"
                             BackgroundColor="Transparent"
                             Padding="0">
-                        <Entry x:Name="entryNome"
-                               Placeholder="Ex.: Oncologista"
-                               MaxLength="100"
-                               Margin="10,4" />
+                        <DatePicker x:Name="pickerData"
+                                    Format="dd/MM/yyyy"
+                                    Margin="10,4"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Center"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                     </Border>
 
-                    <Label Text="Tipo de lembrete"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           Margin="0,8,0,0"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
                     <Border Stroke="{StaticResource PaletaNeutro}"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 14"
                             BackgroundColor="Transparent"
                             Padding="0">
-                        <Picker x:Name="pickerTipo"
-                                Title="Selecione o tipo"
-                                ItemDisplayBinding="{Binding Nome}"
-                                Margin="10,4"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                        <!-- Largura natural e centralizado: esticado, o divisor
+                             interno entre hora e minuto fica fora do meio -->
+                        <TimePicker x:Name="pickerHora"
+                                    Format="HH:mm"
+                                    Margin="10,4"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                     </Border>
-
-                    <Label Text="Data e hora do lembrete"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           Margin="0,8,0,0"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                        <Border Stroke="{StaticResource PaletaNeutro}"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 14"
-                                BackgroundColor="Transparent"
-                                Padding="0">
-                            <DatePicker x:Name="pickerData"
-                                        Format="dd/MM/yyyy"
-                                        Margin="10,4"
-                                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-                        </Border>
-                        <Border Grid.Column="1"
-                                Stroke="{StaticResource PaletaNeutro}"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 14"
-                                BackgroundColor="Transparent"
-                                Padding="0">
-                            <TimePicker x:Name="pickerHora"
-                                        Format="HH:mm"
-                                        Margin="10,4"
-                                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-                        </Border>
-                    </Grid>
-
-                    <Label Text="Descrição do lembrete"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           Margin="0,8,0,0"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
-                    <Border Stroke="{StaticResource PaletaNeutro}"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 14"
-                            BackgroundColor="Transparent"
-                            Padding="0">
-                        <Editor x:Name="editorDescricao"
-                                Placeholder="Ex.: Retorno oncologista com a Dra. Angelica Bezerra."
-                                HeightRequest="110"
-                                Margin="10,4" />
-                    </Border>
-
                 </VerticalStackLayout>
-            </Border>
-        </ScrollView>
+
+                <Label Grid.Row="6"
+                       Text="Descrição do lembrete"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       Margin="0,8,0,0"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                <Border Grid.Row="7"
+                        Stroke="{StaticResource PaletaNeutro}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 14"
+                        BackgroundColor="Transparent"
+                        Margin="0,0,0,2"
+                        Padding="0">
+                    <Editor x:Name="editorDescricao"
+                            Placeholder="Ex.: Retorno oncologista com a Dra. Angelica Bezerra."
+                            MinimumHeightRequest="90"
+                            Margin="10,4" />
+                </Border>
+
+                <!-- Imagem opcional: aparece na tela inicial no lugar das iniciais -->
+                <Grid Grid.Row="8"
+                      ColumnDefinitions="56,*,Auto"
+                      ColumnSpacing="10"
+                      Margin="0,10,0,0">
+
+                    <Border WidthRequest="56"
+                            HeightRequest="56"
+                            StrokeThickness="0"
+                            IsClippedToBounds="True"
+                            BackgroundColor="{StaticResource PaletaAzulClaro}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <Label x:Name="lblSemImagem"
+                                   Text="+"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource PaletaAzulEscuro}" />
+                            <Image x:Name="imgLembrete"
+                                   IsVisible="False"
+                                   Aspect="AspectFill"
+                                   WidthRequest="56"
+                                   HeightRequest="56" />
+                        </Grid>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Imagem (opcional)"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                        <Label Text="Mostrada na tela inicial no lugar das iniciais."
+                               FontSize="12"
+                               TextColor="{StaticResource PaletaNeutro}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                        <Button Text="Escolher"
+                                Clicked="BtnEscolherImagem_Clicked"
+                                BackgroundColor="Transparent"
+                                FontSize="13"
+                                Padding="0"
+                                TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+                        <Button x:Name="btnRemoverImagem"
+                                Text="Remover"
+                                Clicked="BtnRemoverImagem_Clicked"
+                                IsVisible="False"
+                                BackgroundColor="Transparent"
+                                FontSize="13"
+                                Padding="0"
+                                TextColor="{StaticResource PaletaNeutro}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Label x:Name="lblAviso"
+                       Grid.Row="9"
+                       FontSize="13"
+                       IsVisible="False"
+                       Margin="0,8,0,0"
+                       TextColor="#D9534F" />
+
+            </Grid>
+        </Border>
 
         <!-- Acoes -->
         <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">

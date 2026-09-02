@@ -1,53 +1,69 @@
-using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
 namespace ProjetoExtensao.Services;
 
+/// <summary>
+/// Envio de e-mail por SMTP, configurado pela secao "Smtp" do appsettings.
+/// </summary>
 public static class EmailSender
 {
-    public static async Task SendEmailAsync(string to, string subject, string body)
+    public enum Resultado
     {
+        /// <summary>E-mail entregue ao servidor SMTP.</summary>
+        Enviado,
+
+        /// <summary>Sem configuracao SMTP: o conteudo foi apenas registrado no log.</summary>
+        NaoConfigurado,
+
+        /// <summary>O servidor SMTP recusou ou a conexao falhou.</summary>
+        Falhou
+    }
+
+    public static async Task<Resultado> EnviarAsync(string destinatario, string assunto, string corpo)
+    {
+        var configuracao = ObterConfiguracao();
+
+        string? host = configuracao?["Smtp:Host"];
+        string? porta = configuracao?["Smtp:Port"];
+        string? usuario = configuracao?["Smtp:User"];
+        string? senha = configuracao?["Smtp:Password"];
+        string? remetente = configuracao?["Smtp:From"] ?? usuario;
+        bool ssl = !bool.TryParse(configuracao?["Smtp:EnableSsl"], out var valorSsl) || valorSsl;
+
+        if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(remetente))
+        {
+            // Em desenvolvimento, sem SMTP configurado, o conteudo vai para o log
+            Debug.WriteLine($"[e-mail nao enviado: SMTP nao configurado]\nPara: {destinatario}\nAssunto: {assunto}\n{corpo}");
+            return Resultado.NaoConfigurado;
+        }
+
+        if (!int.TryParse(porta, out var numeroPorta))
+            numeroPorta = 587;
+
         try
         {
-            var services = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext?.Services;
-            var configuration = services?.GetService(typeof(IConfiguration)) as IConfiguration;
+            using var mensagem = new MailMessage(remetente, destinatario, assunto, corpo);
+            using var cliente = new SmtpClient(host, numeroPorta) { EnableSsl = ssl };
 
-            string? host = configuration?["Smtp:Host"];
-            string? portStr = configuration?["Smtp:Port"];
-            string? user = configuration?["Smtp:User"];
-            string? pass = configuration?["Smtp:Password"];
-            string? from = configuration?["Smtp:From"] ?? user;
-            bool enableSsl = bool.TryParse(configuration?["Smtp:EnableSsl"], out var ssl) && ssl;
+            if (!string.IsNullOrWhiteSpace(usuario))
+                cliente.Credentials = new NetworkCredential(usuario, senha);
 
-            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(portStr) || string.IsNullOrEmpty(from))
-            {
-                // Configuração SMTP não encontrada — em ambiente de desenvolvimento apenas logar
-                Console.WriteLine($"Enviar e-mail para: {to}\nAssunto: {subject}\nCorpo: {body}");
-                return;
-            }
-
-            if (!int.TryParse(portStr, out var port)) port = 25;
-
-            using var message = new MailMessage(from, to, subject, body);
-            using var client = new SmtpClient(host, port)
-            {
-                EnableSsl = enableSsl
-            };
-
-            if (!string.IsNullOrEmpty(user))
-            {
-                client.Credentials = new NetworkCredential(user, pass);
-            }
-
-            await client.SendMailAsync(message);
+            await cliente.SendMailAsync(mensagem);
+            return Resultado.Enviado;
         }
         catch (Exception ex)
         {
-            // Não interromper fluxo da aplicação: apenas logar
-            Console.WriteLine("Falha ao enviar e-mail: " + ex.Message);
+            Debug.WriteLine("Falha ao enviar e-mail: " + ex);
+            return Resultado.Falhou;
         }
+    }
+
+    private static IConfiguration? ObterConfiguracao()
+    {
+        var services = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext?.Services;
+        return services?.GetService(typeof(IConfiguration)) as IConfiguration;
     }
 }

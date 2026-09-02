@@ -1,196 +1,265 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ProjetoExtensao.TelaInicial"
-             Title="TelaInicial"
-             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
-
-    <ScrollView>
-        <VerticalStackLayout Padding="18,12" Spacing="16">
-
-            <!-- Cabecalho: avatar (perfil) + saudacao + menu de tres linhas -->
-            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-
-                <Border Grid.Column="0"
-                        WidthRequest="52"
-                        HeightRequest="52"
-                        StrokeThickness="0"
-                        BackgroundColor="{StaticResource PaletaAzul}"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Center">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="26" />
-                    </Border.StrokeShape>
-                    <ImageButton x:Name="btnPerfil"
-                                 Source="dotnet_bot.png"
-                                 Aspect="AspectFill"
-                                 BackgroundColor="Transparent"
-                                 Clicked="BotaoPerfil_Clicked" />
-                </Border>
-
-                <Label x:Name="lblBoasVindas"
-                       Grid.Column="1"
-                       FontAttributes="Bold"
-                       FontSize="18"
-                       VerticalOptions="Center"
-                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-
-                <!-- Botao de tres linhas (menu) -->
-                <Grid Grid.Column="2"
-                      x:Name="MenuHamburguer"
-                      WidthRequest="44"
-                      HeightRequest="44"
-                      RowDefinitions="3,3,3"
-                      RowSpacing="6"
-                      Padding="10,13"
-                      VerticalOptions="Center">
-                    <BoxView Grid.Row="0" CornerRadius="2"
-                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
-                    <BoxView Grid.Row="1" CornerRadius="2"
-                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
-                    <BoxView Grid.Row="2" CornerRadius="2"
-                             Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="BotaoMenu_Tapped" />
-                    </Grid.GestureRecognizers>
-                </Grid>
-            </Grid>
-
-            <!-- Faixa da semana -->
-            <CollectionView x:Name="WeekCollection"
-                            ItemsSource="{Binding WeekDays}"
-                            SelectionMode="Single"
-                            HeightRequest="72"
-                            ItemsLayout="HorizontalList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="4,0" WidthRequest="48" RowDefinitions="Auto,*" RowSpacing="6">
-                            <!-- Remove o destaque roxo padrao da selecao; o dia atual
-                                 ja se distingue pelo proprio circulo preenchido -->
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroupList>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal" />
-                                        <VisualState x:Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateGroupList>
-                            </VisualStateManager.VisualStateGroups>
-
-                            <Label Text="{Binding ShortName}"
-                                   FontSize="11"
-                                   HorizontalOptions="Center"
-                                   TextColor="{Binding LabelColor}" />
-
-                            <Border Grid.Row="1"
-                                    HeightRequest="38"
-                                    WidthRequest="38"
-                                    StrokeThickness="0"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Start"
-                                    BackgroundColor="{Binding CircleColor}">
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="19" />
-                                </Border.StrokeShape>
-                                <Label Text="{Binding DayNumber}"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="Center"
-                                       TextColor="{Binding NumberColor}"
-                                       FontAttributes="Bold"
-                                       FontSize="15" />
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <!-- Proximo lembrete em -->
-            <Border StrokeThickness="0"
-                    Padding="18"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Próximo lembrete em"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-                    <Label x:Name="lblDiasProximoLembrete"
-                           Text="6 Dias"
-                           FontSize="15"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
-                </VerticalStackLayout>
-            </Border>
-
-            <!-- Detalhe do lembrete -->
-            <Border StrokeThickness="0"
-                    Padding="18"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="*,64" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="6">
-                    <Label Text="Consulta - Oncologista"
-                           Grid.Row="0" Grid.Column="0"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-
-                    <Label Text="Retorno oncologista Dra. Angelica Bezerra"
-                           Grid.Row="1" Grid.Column="0"
-                           FontSize="14"
-                           LineBreakMode="WordWrap"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
-
-                    <Border Grid.RowSpan="2" Grid.Column="1"
-                            StrokeThickness="0"
-                            WidthRequest="56"
-                            HeightRequest="56"
-                            VerticalOptions="Start"
-                            BackgroundColor="{StaticResource PaletaAzulClaro}">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="8" />
-                        </Border.StrokeShape>
-                        <Image Source="placeholder_image.png"
-                               Aspect="AspectFill"
-                               WidthRequest="56"
-                               HeightRequest="56" />
-                    </Border>
-                </Grid>
-            </Border>
-
-            <!-- Dica de hoje -->
-            <Border StrokeThickness="0"
-                    Padding="18"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Dica de hoje!"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
-                    <Label Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal."
-                           LineBreakMode="WordWrap"
-                           FontSize="13"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
-                    <Button Text="Clique aqui e saiba mais"
-                            BackgroundColor="{StaticResource PaletaAzulEscuro}"
-                            TextColor="White"
-                            FontSize="13"
-                            CornerRadius="18"
-                            HeightRequest="38"
-                            Padding="18,0"
-                            HorizontalOptions="Start" />
-                </VerticalStackLayout>
-            </Border>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
-</ContentPage>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.TelaInicial"
+             Title="TelaInicial"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <!-- Linhas em proporcao: os cartoes acompanham a altura disponivel da tela -->
+    <Grid Padding="18,12"
+          RowSpacing="14"
+          RowDefinitions="Auto,Auto,Auto,2*,3*">
+
+        <!-- Cabecalho: avatar (perfil) + saudacao + menu de tres linhas -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+            <Border Grid.Column="0"
+                    WidthRequest="48"
+                    HeightRequest="48"
+                    StrokeThickness="0"
+                    BackgroundColor="{StaticResource PaletaAzul}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+                <ImageButton x:Name="btnPerfil"
+                             Source="dotnet_bot.png"
+                             Aspect="AspectFill"
+                             BackgroundColor="Transparent"
+                             Clicked="BotaoPerfil_Clicked" />
+            </Border>
+
+            <Label x:Name="lblBoasVindas"
+                   Grid.Column="1"
+                   FontAttributes="Bold"
+                   FontSize="15"
+                   MaxLines="1"
+                   LineBreakMode="TailTruncation"
+                   VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+            <!-- Botao de tres linhas (menu) -->
+            <Grid Grid.Column="2"
+                  x:Name="MenuHamburguer"
+                  WidthRequest="44"
+                  HeightRequest="44"
+                  RowDefinitions="3,3,3"
+                  RowSpacing="6"
+                  Padding="10,13"
+                  VerticalOptions="Center">
+                <BoxView Grid.Row="0" CornerRadius="2"
+                         Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                <BoxView Grid.Row="1" CornerRadius="2"
+                         Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                <BoxView Grid.Row="2" CornerRadius="2"
+                         Color="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BotaoMenu_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+
+        <!-- Faixa da semana -->
+        <CollectionView x:Name="WeekCollection"
+                        Grid.Row="1"
+                        ItemsSource="{Binding WeekDays}"
+                        SelectionMode="Single"
+                        HeightRequest="72"
+                        ItemsLayout="HorizontalList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="4,0" WidthRequest="48" RowDefinitions="Auto,*" RowSpacing="6">
+                        <!-- Remove o destaque roxo padrao da selecao; o dia atual
+                             ja se distingue pelo proprio circulo preenchido -->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Label Text="{Binding ShortName}"
+                               FontSize="11"
+                               HorizontalOptions="Center"
+                               TextColor="{Binding LabelColor}" />
+
+                        <Border Grid.Row="1"
+                                HeightRequest="38"
+                                WidthRequest="38"
+                                StrokeThickness="0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Start"
+                                BackgroundColor="{Binding CircleColor}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="19" />
+                            </Border.StrokeShape>
+                            <Label Text="{Binding DayNumber}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   TextColor="{Binding NumberColor}"
+                                   FontAttributes="Bold"
+                                   FontSize="15" />
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Proximo lembrete em -->
+        <Border Grid.Row="2"
+                StrokeThickness="0"
+                Padding="18,14"
+                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Próximo lembrete em"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <Label x:Name="lblDiasProximoLembrete"
+                       FontSize="15"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                <Label x:Name="lblDataProximoLembrete"
+                       FontSize="13"
+                       TextColor="{StaticResource PaletaNeutro}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Detalhe do proximo lembrete -->
+        <Border Grid.Row="3"
+                StrokeThickness="0"
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+
+            <Grid>
+                <!-- Com lembrete cadastrado -->
+                <Grid x:Name="PainelLembrete"
+                      ColumnDefinitions="*,64"
+                      RowDefinitions="Auto,Auto,*"
+                      ColumnSpacing="12"
+                      RowSpacing="6">
+                    <Label x:Name="lblTituloLembrete"
+                           Grid.Row="0" Grid.Column="0"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           MaxLines="1"
+                           LineBreakMode="TailTruncation"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+
+                    <Label x:Name="lblDescricaoLembrete"
+                           Grid.Row="1" Grid.Column="0"
+                           FontSize="14"
+                           LineBreakMode="WordWrap"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                    <Border Grid.RowSpan="2" Grid.Column="1"
+                            StrokeThickness="0"
+                            WidthRequest="56"
+                            HeightRequest="56"
+                            VerticalOptions="Start"
+                            IsClippedToBounds="True"
+                            BackgroundColor="{StaticResource PaletaAzulClaro}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <!-- As iniciais sao o padrao; a imagem do lembrete,
+                                 quando existir, aparece por cima -->
+                            <Label x:Name="lblIniciaisLembrete"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource PaletaAzulEscuro}" />
+                            <Image x:Name="imgLembrete"
+                                   IsVisible="False"
+                                   Aspect="AspectFill"
+                                   WidthRequest="56"
+                                   HeightRequest="56" />
+                        </Grid>
+                    </Border>
+
+                    <Button Grid.Row="2" Grid.ColumnSpan="2"
+                            Text="Ver todos os lembretes"
+                            Clicked="BotaoVerLembretes_Clicked"
+                            BackgroundColor="Transparent"
+                            FontSize="13"
+                            Padding="0"
+                            VerticalOptions="End"
+                            HorizontalOptions="Start"
+                            TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+                </Grid>
+
+                <!-- Sem lembretes: convite para cadastrar -->
+                <VerticalStackLayout x:Name="PainelSemLembrete"
+                                     IsVisible="False"
+                                     Spacing="10"
+                                     VerticalOptions="Center">
+                    <Label Text="Nenhum lembrete cadastrado"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                    <Label Text="Cadastre seu primeiro lembrete para acompanhar consultas, exames e remédios por aqui."
+                           FontSize="13"
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource PaletaNeutro}" />
+                    <Button Text="Cadastrar lembrete"
+                            Clicked="BotaoCadastrarLembrete_Clicked"
+                            BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                            TextColor="White"
+                            FontSize="13"
+                            CornerRadius="20"
+                            HeightRequest="40"
+                            Padding="20,0"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Dica de hoje -->
+        <Border Grid.Row="4"
+                StrokeThickness="0"
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+            <Grid RowDefinitions="Auto,*,Auto" RowSpacing="8">
+                <Label Text="Dica de hoje!"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <Label Grid.Row="1"
+                       Text="Beber água é essencial para o bom funcionamento do corpo humano, sendo fundamental para a hidratação, transporte de nutrientes, eliminação de toxinas e regulação da temperatura corporal."
+                       LineBreakMode="WordWrap"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                <Button Grid.Row="2"
+                        Text="Clique aqui e saiba mais"
+                        BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                        TextColor="White"
+                        FontSize="13"
+                        CornerRadius="18"
+                        HeightRequest="38"
+                        Padding="18,0"
+                        HorizontalOptions="Center" />
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</ContentPage>

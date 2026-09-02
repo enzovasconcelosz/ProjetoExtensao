@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.AjusteImagemPerfil"
+             Title="Ajustar foto"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <Grid Padding="20,14" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="16">
+
+        <!-- Cabecalho -->
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button Grid.Column="0"
+                    Text="‹"
+                    FontSize="28"
+                    BackgroundColor="Transparent"
+                    Padding="0"
+                    WidthRequest="44"
+                    Clicked="BtnCancelar_Clicked"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <Label Grid.Column="1"
+                   Text="Cortar foto"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+            <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="10" VerticalOptions="Center">
+
+            <Label Text="Arraste a imagem e use o zoom. O que estiver dentro do círculo será a sua foto."
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource PaletaNeutro}" />
+
+            <!-- Area de recorte: a imagem fica presa ao quadrado e o circulo
+                 marca exatamente o que sera aproveitado -->
+            <Grid x:Name="AreaRecorte"
+                  WidthRequest="280"
+                  HeightRequest="280"
+                  HorizontalOptions="Center">
+
+                <Border StrokeThickness="0"
+                        IsClippedToBounds="True"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="4" />
+                    </Border.StrokeShape>
+
+                    <Image x:Name="imgOriginal"
+                           WidthRequest="280"
+                           HeightRequest="280"
+                           Aspect="AspectFill" />
+                </Border>
+
+                <!-- Guia circular, alinhada ao quadrado de recorte -->
+                <Border InputTransparent="True"
+                        StrokeThickness="2"
+                        Stroke="White"
+                        BackgroundColor="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="140" />
+                    </Border.StrokeShape>
+                </Border>
+
+                <Border InputTransparent="True"
+                        StrokeThickness="2"
+                        Stroke="White"
+                        BackgroundColor="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="4" />
+                    </Border.StrokeShape>
+                </Border>
+
+                <Grid.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="Imagem_PanUpdated" />
+                    <PinchGestureRecognizer PinchUpdated="Imagem_PinchUpdated" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </VerticalStackLayout>
+
+        <!-- Zoom -->
+        <VerticalStackLayout Grid.Row="2" Spacing="4">
+            <Label Text="Zoom"
+                   FontSize="13"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+            <Slider x:Name="sliderZoom"
+                    Minimum="1"
+                    Maximum="3"
+                    Value="1"
+                    ValueChanged="SliderZoom_ValueChanged"
+                    MinimumTrackColor="{StaticResource PaletaAzulEscuro}"
+                    MaximumTrackColor="{StaticResource PaletaNeutro}"
+                    ThumbColor="{StaticResource PaletaAzulEscuro}" />
+        </VerticalStackLayout>
+
+        <!-- Acoes -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Button Text="Cancelar"
+                    Clicked="BtnCancelar_Clicked"
+                    BackgroundColor="Transparent"
+                    BorderWidth="1"
+                    BorderColor="{StaticResource PaletaAzulEscuro}"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource PaletaAzul}}" />
+
+            <Button Grid.Column="1"
+                    Text="Confirmar"
+                    Clicked="BtnConfirmar_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

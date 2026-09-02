@@ -15,11 +15,15 @@ public partial class Configuracoes : ContentPage
         base.OnAppearing();
         Tema.Aplicar();
 
-        string? UsuarioLogado = await SecureStorage.Default.GetAsync("UsuarioLogado");
-        if (string.IsNullOrWhiteSpace(UsuarioLogado))
-            UsuarioLogado = Preferences.Default.Get("PerfilNome", "Usuário");
+        imgPerfil.Source = ImagemPerfil.Obter();
 
-        lblUsuarioLogado.Text = UsuarioLogado;
+        // Exibe o nome cadastrado, nao o login (e-mail)
+        var nome = Preferences.Default.Get("PerfilNome", string.Empty);
+
+        if (string.IsNullOrWhiteSpace(nome))
+            nome = await SecureStorage.Default.GetAsync("UsuarioLogado") ?? "Usuário";
+
+        lblUsuarioLogado.Text = nome;
     }
 
     private async void BotaoSair_Clicked(object sender, EventArgs e)
@@ -42,6 +46,11 @@ public partial class Configuracoes : ContentPage
     private void BtnLembretes_Clicked(object sender, EventArgs e)
     {
         App.Current.MainPage = new Lembretes();
+    }
+
+    private void BtnCalendario_Clicked(object sender, EventArgs e)
+    {
+        App.Current.MainPage = new Calendario(null, () => new Configuracoes());
     }
 
     private void BotaoAparencia_Clicked(object sender, EventArgs e)

@@ -11,7 +11,6 @@ namespace ProjetoExtensao;
 public partial class ConfiguracoesUsuario : ContentPage
 {
     private Usuario? _usuario;
-    private byte[]? _novaImagem;
 
     // Quem abriu a tela: o retorno volta para a mesma origem
     private readonly Func<Page> _paginaAnterior;
@@ -25,6 +24,7 @@ public partial class ConfiguracoesUsuario : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        Tema.Aplicar();
 
         await CarregarUsuarioAsync();
     }
@@ -69,9 +69,7 @@ public partial class ConfiguracoesUsuario : ContentPage
 
     private void CarregarImagemLocal()
     {
-        var caminho = Preferences.Default.Get("PerfilImagem", string.Empty);
-        if (!string.IsNullOrWhiteSpace(caminho) && File.Exists(caminho))
-            imgPerfil.Source = ImageSource.FromFile(caminho);
+        imgPerfil.Source = ImagemPerfil.Obter();
     }
 
     private async void BotaoAlterarImagem_Clicked(object sender, EventArgs e)
@@ -89,9 +87,11 @@ public partial class ConfiguracoesUsuario : ContentPage
             using var origem = await arquivo.OpenReadAsync();
             using var memoria = new MemoryStream();
             await origem.CopyToAsync(memoria);
-            _novaImagem = memoria.ToArray();
 
-            imgPerfil.Source = ImageSource.FromStream(() => new MemoryStream(_novaImagem));
+            // O recorte e escolhido em tela propria, ja que o avatar e circular
+            App.Current.MainPage = new AjusteImagemPerfil(
+                memoria.ToArray(),
+                () => new ConfiguracoesUsuario(_paginaAnterior));
         }
         catch (Exception ex)
         {
@@ -127,7 +127,6 @@ public partial class ConfiguracoesUsuario : ContentPage
         // Sempre guarda uma copia local para a tela inicial exibir mesmo sem banco
         Preferences.Default.Set("PerfilNome", nome);
         Preferences.Default.Set("PerfilEmail", email);
-        await SalvarImagemLocalAsync();
 
         var contexto = ObterContexto();
         if (_usuario == null || contexto == null)
@@ -143,7 +142,7 @@ public partial class ConfiguracoesUsuario : ContentPage
             _usuario.Login = email;
 
             if (!string.IsNullOrWhiteSpace(senha))
-                _usuario.Senha = senha;
+                _usuario.Senha = SenhaHash.Gerar(senha);
 
             // A foto fica gravada no dispositivo: a tabela Imagem do banco nao
             // possui coluna para o binario da imagem.
@@ -157,23 +156,6 @@ public partial class ConfiguracoesUsuario : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Erro", "Não foi possível salvar os dados. " + ex.Message, "Fechar");
-        }
-    }
-
-    private async Task SalvarImagemLocalAsync()
-    {
-        if (_novaImagem == null)
-            return;
-
-        try
-        {
-            var caminho = Path.Combine(FileSystem.AppDataDirectory, "perfil.img");
-            await File.WriteAllBytesAsync(caminho, _novaImagem);
-            Preferences.Default.Set("PerfilImagem", caminho);
-        }
-        catch
-        {
-            // sem espaco para gravar: mantem a imagem anterior
         }
     }
 

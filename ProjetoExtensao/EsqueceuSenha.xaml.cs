@@ -9,6 +9,19 @@ public partial class EsqueceuSenha : ContentPage
         InitializeComponent();
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Tema.Aplicar();
+    }
+
+    private void MostrarCarregando(bool exibindo)
+    {
+        LoadingOverlay.IsVisible = exibindo;
+        Loader.IsRunning = exibindo;
+        btnPesquisar.IsEnabled = !exibindo;
+    }
+
     private void BotaoCancelar_Clicked(object sender, EventArgs e)
     {
         App.Current.MainPage = new Login();
@@ -36,7 +49,8 @@ public partial class EsqueceuSenha : ContentPage
         try
         {
             // Show loading overlay and disable button to prevent double clicks
-            try { LoadingOverlay.IsVisible = true; Loader.IsRunning = true; btnPesquisar.IsEnabled = false; await Task.Delay(50); } catch { }
+            MostrarCarregando(true);
+            await Task.Delay(50);
 
             var usuario = await context.Set<ProjetoExtensao.Entities.Usuario>()
                 .FirstOrDefaultAsync(u => u.Login == emailInformado);
@@ -48,12 +62,36 @@ public partial class EsqueceuSenha : ContentPage
                 return;
             }
 
-            // Gerar código e enviar e-mail
-            var codigo = ProjetoExtensao.Services.ConfirmationCodeService.GenerateCodeFor(emailInformado);
+            // Gera o código e envia por e-mail
+            var codigo = ProjetoExtensao.Services.ConfirmationCodeService.GerarCodigoPara(emailInformado);
 
-            await ProjetoExtensao.Services.EmailSender.SendEmailAsync(emailInformado, "Código de recuperação", $"Seu código de recuperação é: {codigo}");
+            var corpo =
+                $"Olá, {usuario.NomeUsuario}!\n\n" +
+                $"Seu código de acesso para redefinir a senha é: {codigo}\n\n" +
+                $"O código vale por {(int)ProjetoExtensao.Services.ConfirmationCodeService.Validade.TotalMinutes} minutos. " +
+                "Se você não solicitou a troca de senha, ignore esta mensagem.";
 
-            // Abrir formulário de informar código
+            var envio = await ProjetoExtensao.Services.EmailSender.EnviarAsync(
+                emailInformado, "Código de acesso - Não Me Esquece", corpo);
+
+            switch (envio)
+            {
+                case ProjetoExtensao.Services.EmailSender.Resultado.Falhou:
+                    await DisplayAlert("Erro", "Não foi possível enviar o e-mail com o código. Verifique sua conexão e tente novamente.", "Fechar");
+                    return;
+
+                case ProjetoExtensao.Services.EmailSender.Resultado.NaoConfigurado:
+                    // Sem SMTP configurado o código não sai do dispositivo; mostrá-lo
+                    // aqui mantém o fluxo utilizável em desenvolvimento.
+                    await DisplayAlert("E-mail não configurado",
+                        $"O envio de e-mail não está configurado neste ambiente.\n\nSeu código de acesso é: {codigo}", "Continuar");
+                    break;
+
+                default:
+                    await DisplayAlert("Código enviado", $"Enviamos um código de acesso para {emailInformado}.", "Continuar");
+                    break;
+            }
+
             App.Current.MainPage = new CodigoConfirmacao(emailInformado);
         }
         catch (Exception ex)
@@ -62,7 +100,7 @@ public partial class EsqueceuSenha : ContentPage
         }
         finally
         {
-            try { LoadingOverlay.IsVisible = false; Loader.IsRunning = false; btnPesquisar.IsEnabled = true; } catch { }
+            MostrarCarregando(false);
         }
     }
 }
