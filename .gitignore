@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Configuracao local do desenvolvedor: guarda a string de conexao e as
+# credenciais de SMTP da maquina, que nao devem ir para o repositorio.
+appsettings.Development.json
+appsettings.*.Local.json
