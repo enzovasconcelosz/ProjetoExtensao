@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>ProjetoExtensao.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    O aplicativo e um projeto .NET MAUI, compilado apenas para Android, iOS,
+    MacCatalyst e Windows. Um projeto de teste nao consegue referencia-lo
+    diretamente, entao as classes de regra de negocio (que nao dependem de
+    nada do MAUI) sao compiladas aqui a partir do mesmo arquivo-fonte.
+    Assim os testes exercitam exatamente o codigo que roda no aplicativo.
+  -->
+  <ItemGroup>
+    <Compile Include="../../ProjetoExtensao/Entities/Lembrete.cs" Link="Origem/Lembrete.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/TipoLembrete.cs" Link="Origem/TipoLembrete.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/TipoNotificacao.cs" Link="Origem/TipoNotificacao.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/Usuario.cs" Link="Origem/Usuario.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/ImagemUsuario.cs" Link="Origem/ImagemUsuario.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/ContatoEletronico.cs" Link="Origem/ContatoEletronico.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/Aparencia.cs" Link="Origem/Aparencia.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/PreferenciaUsuario.cs" Link="Origem/PreferenciaUsuario.cs" />
+    <Compile Include="../../ProjetoExtensao/Entities/Enums/**/*.cs" Link="Origem/Enums/%(Filename).cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Interfaces/ILembreteRepository.cs" Link="Origem/ILembreteRepository.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Interfaces/ILembreteService.cs" Link="Origem/ILembreteService.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Interfaces/ITipoLembreteRepository.cs" Link="Origem/ITipoLembreteRepository.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Interfaces/ITipoLembreteService.cs" Link="Origem/ITipoLembreteService.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Validacoes/ValidacaoLembrete.cs" Link="Origem/ValidacaoLembrete.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Validacoes/ValidacaoTipoLembrete.cs" Link="Origem/ValidacaoTipoLembrete.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Services/LembreteService.cs" Link="Origem/LembreteService.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Services/TipoLembreteService.cs" Link="Origem/TipoLembreteService.cs" />
+    <Compile Include="../../ProjetoExtensao/Services/SenhaHash.cs" Link="Origem/SenhaHash.cs" />
+    <Compile Include="../../ProjetoExtensao/Services/ConfirmationCodeService.cs" Link="Origem/ConfirmationCodeService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+</Project>
