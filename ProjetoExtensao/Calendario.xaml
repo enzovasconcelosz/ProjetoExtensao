@@ -77,10 +77,29 @@
                       RowDefinitions="40,40,40,40,40,40"
                       RowSpacing="4" />
 
-                <Label Text="Toque em um dia a partir de hoje para cadastrar um lembrete nessa data."
-                       FontSize="12"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{StaticResource PaletaNeutro}" />
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Toque em um dia a partir de hoje para cadastrar um lembrete nessa data."
+                           FontSize="12"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource PaletaNeutro}" />
+
+                    <!-- Legenda do destaque -->
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Border WidthRequest="14"
+                                HeightRequest="14"
+                                StrokeThickness="0"
+                                VerticalOptions="Center"
+                                BackgroundColor="{StaticResource PaletaAzul}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="7" />
+                            </Border.StrokeShape>
+                        </Border>
+                        <Label Text="Dia com lembrete cadastrado"
+                               FontSize="12"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource PaletaNeutro}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </Border>
 

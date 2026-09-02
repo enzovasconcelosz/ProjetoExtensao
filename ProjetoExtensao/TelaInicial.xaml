@@ -93,7 +93,8 @@
                         <Border Grid.Row="1"
                                 HeightRequest="38"
                                 WidthRequest="38"
-                                StrokeThickness="0"
+                                Stroke="{Binding ContornoColor}"
+                                StrokeThickness="{Binding ContornoEspessura}"
                                 HorizontalOptions="Center"
                                 VerticalOptions="Start"
                                 BackgroundColor="{Binding CircleColor}">

@@ -16,6 +16,9 @@ public partial class TelaInicial : ContentPage
     // abriria o calendario sozinha assim que fosse exibida.
     private bool _selecionandoDiaAtual;
 
+    // Dias da semana que ja possuem lembrete, destacados na faixa
+    private HashSet<DateTime> _diasComLembrete = new();
+
     public TelaInicial()
     {
         InitializeComponent();
@@ -38,6 +41,9 @@ public partial class TelaInicial : ContentPage
 
         await CarregarSaudacao();
         await CarregarProximoLembrete();
+
+        // A faixa e remontada depois de saber quais dias tem lembrete
+        BuildWeekDays();
 
         // Seleciona o dia atual na colecao
         var today = WeekDays.FirstOrDefault(d => d.IsToday);
@@ -110,8 +116,11 @@ public partial class TelaInicial : ContentPage
             if (Servicos?.GetService<ILembreteService>() is ILembreteService servico)
             {
                 var agora = DateTime.Now;
+                var lembretes = (await servico.GetAllAsync()).ToList();
 
-                proximo = (await servico.GetAllAsync())
+                _diasComLembrete = lembretes.Select(l => l.DataHoraLembrete.Date).ToHashSet();
+
+                proximo = lembretes
                     .Where(l => l.DataHoraLembrete >= agora)
                     .OrderBy(l => l.DataHoraLembrete)
                     .FirstOrDefault();
@@ -259,7 +268,8 @@ public partial class TelaInicial : ContentPage
                 Date = dt,
                 ShortName = labelsMap[dt.DayOfWeek],
                 DayNumber = dt.Day.ToString(),
-                IsToday = dt.Date == today.Date
+                IsToday = dt.Date == today.Date,
+                TemLembrete = _diasComLembrete.Contains(dt.Date)
             });
         }
     }
@@ -271,22 +281,49 @@ public class WeekDay : INotifyPropertyChanged
     public string ShortName { get; set; } = string.Empty;
     public string DayNumber { get; set; } = string.Empty;
     public bool IsToday { get; set; }
+    public bool TemLembrete { get; set; }
 
     private static bool Escuro =>
         Microsoft.Maui.Controls.Application.Current?.RequestedTheme == AppTheme.Dark;
 
-    // Cores derivadas da paleta padrao do projeto, acompanhando o tema
-    public Color CircleColor => IsToday
-        ? Color.FromArgb(Escuro ? "#749DD0" : "#48547C")
-        : Color.FromArgb(Escuro ? "#3F4149" : "#E8F2FB");
+    // Mesmo criterio do calendario: hoje em azul escuro, dia com lembrete em
+    // azul da paleta e, quando coincidem, o contorno mantem os dois sentidos.
+    public Color CircleColor
+    {
+        get
+        {
+            if (IsToday)
+                return Color.FromArgb("#48547C");
 
-    public Color NumberColor => IsToday
-        ? Color.FromArgb(Escuro ? "#33343B" : "#EDF3F8")
-        : Color.FromArgb(Escuro ? "#EDF3F8" : "#33343B");
+            if (TemLembrete)
+                return Color.FromArgb("#749DD0");
+
+            return Color.FromArgb(Escuro ? "#3F4149" : "#E8F2FB");
+        }
+    }
+
+    public Color NumberColor
+    {
+        get
+        {
+            if (IsToday)
+                return Color.FromArgb("#EDF3F8");
+
+            // Sobre o azul da paleta, o texto escuro tem mais contraste
+            if (TemLembrete)
+                return Color.FromArgb("#33343B");
+
+            return Color.FromArgb(Escuro ? "#EDF3F8" : "#33343B");
+        }
+    }
 
     public Color LabelColor => IsToday
         ? Color.FromArgb(Escuro ? "#EDF3F8" : "#48547C")
         : Color.FromArgb("#AAA59F");
+
+    public Color ContornoColor => Color.FromArgb("#749DD0");
+
+    public double ContornoEspessura => IsToday && TemLembrete ? 2 : 0;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 }
