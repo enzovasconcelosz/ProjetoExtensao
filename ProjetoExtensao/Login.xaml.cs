@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.Infrastructure.Data;
 
 namespace ProjetoExtensao;
@@ -19,6 +21,29 @@ public partial class Login : ContentPage
     private void BotaoEsqueceuSenha_Clicked(object sender, EventArgs e)
     {
         App.Current.MainPage = new EsqueceuSenha();
+    }
+
+    /// <summary>
+    /// Recria os avisos dos lembretes futuros neste aparelho. Necessario porque
+    /// o agendamento vive no sistema operacional, nao no banco: um aparelho novo
+    /// (ou reinstalado) entra sem nenhum aviso marcado.
+    /// </summary>
+    private static async Task ReagendarAvisosAsync()
+    {
+        try
+        {
+            var services = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext?.Services;
+            var service = services?.GetService<ILembreteService>();
+
+            if (service == null)
+                return;
+
+            await NotificacaoLembrete.ReagendarTodosAsync(await service.GetAllAsync());
+        }
+        catch
+        {
+            // O login nao pode falhar por causa dos avisos
+        }
     }
 
     private async void BotaoLogin_Clicked(object sender, EventArgs e)
@@ -62,12 +87,21 @@ public partial class Login : ContentPage
                 await contexto.SaveChangesAsync();
             }
 
+            // Antes de qualquer consulta: e o Id da sessao que separa os dados
+            // desta conta dos das outras.
+            SessaoUsuario.Entrar(usuario.Id);
+
             await SecureStorage.Default.SetAsync("UsuarioLogado", usuario.Login);
             Preferences.Default.Set("PerfilNome", usuario.NomeUsuario);
             Preferences.Default.Set("PerfilEmail", usuario.Login);
 
             if (Senha != null)
                 Senha.Text = string.Empty;
+
+            // A escolha de notificacao acompanha a conta: em um aparelho novo
+            // ela vem do banco, e os avisos passam a existir tambem aqui.
+            await PreferenciaNotificacao.CarregarDoBancoAsync(usuario.Login);
+            await ReagendarAvisosAsync();
 
             App.Current.MainPage = new TelaInicial();
         }

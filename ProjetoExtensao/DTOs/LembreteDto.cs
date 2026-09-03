@@ -9,4 +9,5 @@ public class LembreteDto
     public DateTime DataHoraRegistro { get; set; }
     public long? IdTipoLembrete { get; set; }
     public long? IdTipoNotificacao { get; set; }
+    public long? IdUsuario { get; set; }
 }

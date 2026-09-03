@@ -11,6 +11,8 @@
         <Grid ColumnDefinitions="Auto,*,Auto">
             <Button Grid.Column="0"
                     Text="‹"
+                    SemanticProperties.Description="Voltar"
+                    SemanticProperties.Hint="Retorna para a tela anterior"
                     FontSize="28"
                     BackgroundColor="Transparent"
                     Padding="0"
@@ -48,6 +50,7 @@
 
                     <Button Grid.Column="1"
                             Text="‹"
+                            SemanticProperties.Description="Mês anterior"
                             FontSize="22"
                             WidthRequest="40"
                             HeightRequest="40"
@@ -58,6 +61,7 @@
 
                     <Button Grid.Column="2"
                             Text="›"
+                            SemanticProperties.Description="Próximo mês"
                             FontSize="22"
                             WidthRequest="40"
                             HeightRequest="40"

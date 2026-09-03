@@ -17,6 +17,12 @@ namespace ProjetoExtensao.Entities
 
         public bool Notificar { get; set; } = notificar;
 
+        /// <summary>Se o aviso do lembrete faz o aparelho vibrar.</summary>
+        public bool Vibrar { get; set; } = true;
+
+        /// <summary>Se o aviso do lembrete tambem toca o som de notificacao.</summary>
+        public bool Som { get; set; } = true;
+
         public TemaSistemaEnum Tema { get; set; } = tema;
     }
 }

@@ -72,7 +72,7 @@ public static class MappingExtensions
     public static PreferenciaUsuarioDto ToDto(this PreferenciaUsuario p)
     {
         if (p == null) return null!;
-        return new PreferenciaUsuarioDto { Id = p.Id, Notificar = p.Notificar, Tema = p.Tema.ToString() };
+        return new PreferenciaUsuarioDto { Id = p.Id, Notificar = p.Notificar, Vibrar = p.Vibrar, Som = p.Som, Tema = p.Tema.ToString() };
     }
 
     public static PreferenciaUsuario ToEntity(this PreferenciaUsuarioDto dto)
@@ -82,6 +82,8 @@ public static class MappingExtensions
         if (!string.IsNullOrWhiteSpace(dto.Tema)) Enum.TryParse<TemaSistemaEnum>(dto.Tema!, out tema);
         var p = new PreferenciaUsuario(dto.Notificar, tema);
         p.Id = dto.Id;
+        p.Vibrar = dto.Vibrar;
+        p.Som = dto.Som;
         return p;
     }
 
@@ -145,7 +147,8 @@ public static class MappingExtensions
             DataHoraLembrete = e.DataHoraLembrete,
             DataHoraRegistro = e.DataHoraRegistro,
             IdTipoLembrete = e.IdTipoLembrete,
-            IdTipoNotificacao = e.IdTipoNotificacao
+            IdTipoNotificacao = e.IdTipoNotificacao,
+            IdUsuario = e.IdUsuario
         };
     }
 
@@ -156,6 +159,7 @@ public static class MappingExtensions
         e.Id = dto.Id;
         e.IdTipoLembrete = dto.IdTipoLembrete;
         e.IdTipoNotificacao = dto.IdTipoNotificacao;
+        e.IdUsuario = dto.IdUsuario;
         e.DataHoraRegistro = dto.DataHoraRegistro;
         return e;
     }

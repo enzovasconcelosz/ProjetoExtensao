@@ -91,6 +91,7 @@ public partial class Lembretes : ContentPage
         {
             await _service.DeleteAsync(item.Dto.Id);
             ImagemLembrete.Remover(item.Dto.Id);
+            NotificacaoLembrete.Cancelar(item.Dto.Id);
             await CarregarLista();
         }
         catch (Exception ex)

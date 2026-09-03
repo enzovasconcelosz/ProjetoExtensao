@@ -11,6 +11,8 @@
         <Grid ColumnDefinitions="Auto,*,Auto">
             <Button Grid.Column="0"
                     Text="‹"
+                    SemanticProperties.Description="Voltar"
+                    SemanticProperties.Hint="Retorna para a tela anterior"
                     FontSize="28"
                     BackgroundColor="Transparent"
                     Padding="0"
@@ -143,6 +145,7 @@
                       Margin="0,10,0,0">
 
                     <Border WidthRequest="56"
+                            SemanticProperties.Description="Imagem do lembrete"
                             HeightRequest="56"
                             StrokeThickness="0"
                             IsClippedToBounds="True"

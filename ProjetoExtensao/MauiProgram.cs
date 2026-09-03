@@ -5,6 +5,7 @@ using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.Application.Services;
 using ProjetoExtensao.Infrastructure.Data;
 using ProjetoExtensao.Infrastructure.Repositories;
+using Plugin.LocalNotification;
 
 namespace ProjetoExtensao
 {
@@ -24,6 +25,18 @@ namespace ProjetoExtensao
                    {
                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                   })
+                   // Avisos dos lembretes. Os canais precisam existir antes do
+                   // primeiro agendamento: no Android eles nao mudam depois de criados.
+                   .UseLocalNotification(notificacoes =>
+                   {
+                       notificacoes.AddAndroid(android =>
+                       {
+                           android.AddChannelGroup(NotificacaoLembrete.Grupo());
+
+                           foreach (var canal in NotificacaoLembrete.Canais())
+                               android.AddChannel(canal);
+                       });
                    });
 
 #if DEBUG
@@ -35,6 +48,9 @@ namespace ProjetoExtensao
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Conexao.Atual)
             );
+
+            // Quem esta logado: os repositorios usam para separar os dados por conta
+            builder.Services.AddSingleton<IUsuarioAtual, UsuarioAtual>();
 
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IClientService, ClientService>();

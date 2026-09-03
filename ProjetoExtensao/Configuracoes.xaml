@@ -11,6 +11,8 @@
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Button Grid.Column="0"
                         Text="‹"
+                        SemanticProperties.Description="Voltar"
+                        SemanticProperties.Hint="Retorna para a tela anterior"
                         FontSize="28"
                         BackgroundColor="Transparent"
                         Padding="0"
@@ -37,6 +39,8 @@
                         <RoundRectangle CornerRadius="48" />
                     </Border.StrokeShape>
                     <ImageButton x:Name="imgPerfil"
+                                 SemanticProperties.Description="Foto do perfil"
+                                 SemanticProperties.Hint="Abre as configurações do usuário"
                                  Source="dotnet_bot.png"
                                  Aspect="AspectFill"
                                  BackgroundColor="Transparent"
@@ -65,48 +69,75 @@
                 </Border.StrokeShape>
                 <VerticalStackLayout Spacing="0">
 
-                    <Grid Padding="12" ColumnDefinitions="*,Auto">
+                    <Grid Padding="12" ColumnDefinitions="*,Auto"
+                          SemanticProperties.Description="Tipo de lembretes"
+                          SemanticProperties.Hint="Abre a lista de tipos de lembrete">
                         <Label Text="Tipo de lembretes"
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                         <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
+                               AutomationProperties.IsInAccessibleTree="False"
                                TextColor="{StaticResource PaletaNeutro}" />
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BtnTipoLembretes_Clicked" />
                         </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-                    <Grid Padding="12" ColumnDefinitions="*,Auto">
+                    <Grid Padding="12" ColumnDefinitions="*,Auto"
+                          SemanticProperties.Description="Lembretes"
+                          SemanticProperties.Hint="Abre a lista de lembretes">
                         <Label Text="Lembretes"
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                         <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
+                               AutomationProperties.IsInAccessibleTree="False"
                                TextColor="{StaticResource PaletaNeutro}" />
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BtnLembretes_Clicked" />
                         </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-                    <Grid Padding="12" ColumnDefinitions="*,Auto">
+                    <Grid Padding="12" ColumnDefinitions="*,Auto"
+                          SemanticProperties.Description="Calendário"
+                          SemanticProperties.Hint="Abre o calendário de lembretes">
                         <Label Text="Calendário"
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                         <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
+                               AutomationProperties.IsInAccessibleTree="False"
                                TextColor="{StaticResource PaletaNeutro}" />
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BtnCalendario_Clicked" />
                         </Grid.GestureRecognizers>
                     </Grid>
                     <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
-                    <Grid Padding="12" ColumnDefinitions="*,Auto">
+                    <Grid Padding="12" ColumnDefinitions="*,Auto"
+                          SemanticProperties.Description="Notificações"
+                          SemanticProperties.Hint="Abre as opções de aviso dos lembretes">
+                        <Label Text="Notificações"
+                               VerticalOptions="Center"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                        <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
+                               AutomationProperties.IsInAccessibleTree="False"
+                               TextColor="{StaticResource PaletaNeutro}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BotaoNotificacoes_Clicked" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
+                    <Grid Padding="12" ColumnDefinitions="*,Auto"
+                          SemanticProperties.Description="Aparência"
+                          SemanticProperties.Hint="Abre as opções de tema e tamanho de fonte">
                         <Label Text="Aparência"
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
                         <Label Text="›" Grid.Column="1" VerticalOptions="Center" FontSize="24"
+                               AutomationProperties.IsInAccessibleTree="False"
                                TextColor="{StaticResource PaletaNeutro}" />
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BotaoAparencia_Clicked" />

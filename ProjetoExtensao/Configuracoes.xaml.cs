@@ -32,7 +32,17 @@ public partial class Configuracoes : ContentPage
 
         if (confirmacao)
         {
+            // Os avisos agendados sao desta conta: sem cancelar, eles tocariam
+            // no aparelho depois que outro usuario entrasse.
+            NotificacaoLembrete.CancelarTodos();
+
+            SessaoUsuario.Sair();
             SecureStorage.Default.Remove("UsuarioLogado");
+
+            // Nome e e-mail do perfil sao recarregados no proximo login; limpar
+            // aqui evita que a tela mostre os dados de quem acabou de sair.
+            Preferences.Default.Remove("PerfilNome");
+            Preferences.Default.Remove("PerfilEmail");
             App.Current.MainPage = new Login();
         }
     }
@@ -51,6 +61,11 @@ public partial class Configuracoes : ContentPage
     private void BtnCalendario_Clicked(object sender, EventArgs e)
     {
         App.Current.MainPage = new Calendario(null, () => new Configuracoes());
+    }
+
+    private void BotaoNotificacoes_Clicked(object sender, EventArgs e)
+    {
+        App.Current.MainPage = new ConfiguracoesNotificacoes();
     }
 
     private void BotaoAparencia_Clicked(object sender, EventArgs e)

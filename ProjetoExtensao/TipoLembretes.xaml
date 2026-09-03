@@ -11,6 +11,8 @@
         <Grid ColumnDefinitions="Auto,*,Auto">
             <Button Grid.Column="0"
                     Text="‹"
+                    SemanticProperties.Description="Voltar"
+                    SemanticProperties.Hint="Retorna para a tela anterior"
                     FontSize="28"
                     BackgroundColor="Transparent"
                     Padding="0"
@@ -40,6 +42,8 @@
 
                 <!-- Botao adicionar -->
                 <Border Grid.Row="0"
+                        SemanticProperties.Description="Adicionar tipo de lembrete"
+                        SemanticProperties.Hint="Abre o formulário de cadastro de tipo de lembrete"
                         WidthRequest="42"
                         HeightRequest="42"
                         StrokeThickness="0"
@@ -49,6 +53,7 @@
                         <RoundRectangle CornerRadius="21" />
                     </Border.StrokeShape>
                     <Label Text="+"
+                           AutomationProperties.IsInAccessibleTree="False"
                            FontSize="26"
                            FontAttributes="Bold"
                            TextColor="White"

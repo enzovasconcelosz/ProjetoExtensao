@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjetoExtensao.ConfiguracoesNotificacoes"
+             Title="Notificações"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,14" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0"
+                        Text="‹"
+                        SemanticProperties.Description="Voltar"
+                        SemanticProperties.Hint="Retorna para a tela anterior"
+                        FontSize="28"
+                        BackgroundColor="Transparent"
+                        Padding="0"
+                        WidthRequest="44"
+                        Clicked="BotaoVoltar_Clicked"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <Label Grid.Column="1"
+                       Text="Notificações"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                <BoxView Grid.Column="2" WidthRequest="44" Color="Transparent" />
+            </Grid>
+
+            <!-- Liga e desliga o aviso -->
+            <Border StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Avisar na hora do lembrete"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                            <Label Text="O aviso aparece mesmo com o aplicativo fechado."
+                                   FontSize="13"
+                                   TextColor="{StaticResource PaletaNeutro}" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1"
+                                x:Name="switchNotificar"
+                                SemanticProperties.Description="Avisar na hora do lembrete"
+                                HorizontalOptions="End"
+                                WidthRequest="52"
+                                VerticalOptions="Center"
+                                Toggled="SwitchNotificar_Toggled"
+                                OnColor="{StaticResource PaletaAzulEscuro}"
+                                ThumbColor="{StaticResource PaletaAzulClaro}" />
+                    </Grid>
+
+                    <Label x:Name="lblPermissao"
+                           IsVisible="False"
+                           Text="O sistema ainda não autorizou as notificações deste aplicativo. Toque em Testar aviso para autorizar."
+                           FontSize="13"
+                           TextColor="{StaticResource PaletaAzulEscuro}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Como o aviso chega -->
+            <Border x:Name="cardComoAvisar"
+                    StrokeThickness="0"
+                    Padding="18"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Como avisar"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Vibrar"
+                                   FontSize="15"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                            <Label Text="O aparelho vibra quando o aviso chega."
+                                   FontSize="13"
+                                   TextColor="{StaticResource PaletaNeutro}" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1"
+                                x:Name="switchVibrar"
+                                SemanticProperties.Description="Vibrar"
+                                HorizontalOptions="End"
+                                WidthRequest="52"
+                                VerticalOptions="Center"
+                                Toggled="SwitchPreferencia_Toggled"
+                                OnColor="{StaticResource PaletaAzulEscuro}"
+                                ThumbColor="{StaticResource PaletaAzulClaro}" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource PaletaNeutro}" Opacity="0.4" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Tocar som"
+                                   FontSize="15"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource TextoGelo}}" />
+                            <Label Text="Além de vibrar, o aviso toca o som de notificação."
+                                   FontSize="13"
+                                   TextColor="{StaticResource PaletaNeutro}" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1"
+                                x:Name="switchSom"
+                                SemanticProperties.Description="Tocar som"
+                                HorizontalOptions="End"
+                                WidthRequest="52"
+                                VerticalOptions="Center"
+                                Toggled="SwitchPreferencia_Toggled"
+                                OnColor="{StaticResource PaletaAzulEscuro}"
+                                ThumbColor="{StaticResource PaletaAzulClaro}" />
+                    </Grid>
+
+                    <Border Stroke="{StaticResource PaletaNeutro}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="Transparent"
+                            Padding="12">
+                        <Label x:Name="lblResumo"
+                               FontSize="13"
+                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource PaletaNeutro}}" />
+                    </Border>
+
+                    <Button Text="Testar aviso"
+                            Clicked="BotaoTestar_Clicked"
+                            SemanticProperties.Hint="Envia um aviso de exemplo em cinco segundos"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource PaletaAzulEscuro}"
+                            BorderWidth="1"
+                            CornerRadius="22"
+                            HeightRequest="44"
+                            TextColor="{AppThemeBinding Light={StaticResource PaletaAzulEscuro}, Dark={StaticResource TextoGelo}}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="A escolha vale para todos os lembretes e fica salva na sua conta."
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource PaletaNeutro}" />
+
+            <Button Text="Concluir"
+                    Clicked="BotaoVoltar_Clicked"
+                    BackgroundColor="{StaticResource PaletaAzulEscuro}"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

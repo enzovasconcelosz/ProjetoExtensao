@@ -86,6 +86,8 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
                 entity.Property(e => e.Notificar).HasColumnName("FlNotificar").IsRequired();
+                entity.Property(e => e.Vibrar).HasColumnName("FlVibrar").IsRequired();
+                entity.Property(e => e.Som).HasColumnName("FlSom").IsRequired();
 
                 // Nao existe coluna de tema nesta tabela; a preferencia fica no dispositivo.
                 entity.Ignore(e => e.Tema);
@@ -124,9 +126,11 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.Property(e => e.DataHoraRegistro).HasColumnType("datetime");
                 entity.Property(e => e.IdTipoLembrete).HasConversion<int>();
                 entity.Property(e => e.IdTipoNotificacao).HasConversion<int>();
+                entity.Property(e => e.IdUsuario).HasConversion<int>();
 
                 entity.HasOne(e => e.TipoLembrete).WithMany().HasForeignKey(e => e.IdTipoLembrete);
                 entity.HasOne(e => e.TipoNotificacao).WithMany().HasForeignKey(e => e.IdTipoNotificacao);
+                entity.HasOne(e => e.Usuario).WithMany().HasForeignKey(e => e.IdUsuario);
             });
         }
     }

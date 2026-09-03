@@ -24,6 +24,8 @@
                     <RoundRectangle CornerRadius="24" />
                 </Border.StrokeShape>
                 <ImageButton x:Name="btnPerfil"
+                             SemanticProperties.Description="Foto do perfil"
+                             SemanticProperties.Hint="Abre as configurações do usuário"
                              Source="dotnet_bot.png"
                              Aspect="AspectFill"
                              BackgroundColor="Transparent"
@@ -42,6 +44,8 @@
             <!-- Botao de tres linhas (menu) -->
             <Grid Grid.Column="2"
                   x:Name="MenuHamburguer"
+                  SemanticProperties.Description="Menu"
+                  SemanticProperties.Hint="Abre o menu de navegação"
                   WidthRequest="44"
                   HeightRequest="44"
                   RowDefinitions="3,3,3"

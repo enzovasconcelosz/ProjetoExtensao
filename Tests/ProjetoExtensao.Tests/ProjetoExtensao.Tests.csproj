@@ -25,10 +25,19 @@
     <Compile Include="../../ProjetoExtensao/Entities/Aparencia.cs" Link="Origem/Aparencia.cs" />
     <Compile Include="../../ProjetoExtensao/Entities/PreferenciaUsuario.cs" Link="Origem/PreferenciaUsuario.cs" />
     <Compile Include="../../ProjetoExtensao/Entities/Enums/**/*.cs" Link="Origem/Enums/%(Filename).cs" />
+    <Compile Include="../../ProjetoExtensao/Domain/Entities/Client.cs" Link="Origem/Client.cs" />
+    <Compile Include="../../ProjetoExtensao/Infrastructure/Data/AppDbContext.cs" Link="Origem/AppDbContext.cs" />
+    <Compile Include="../../ProjetoExtensao/Infrastructure/Repositories/LembreteRepository.cs" Link="Origem/LembreteRepository.cs" />
+    <Compile Include="../../ProjetoExtensao/Infrastructure/Repositories/TipoLembreteRepository.cs" Link="Origem/TipoLembreteRepository.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Interfaces/IUsuarioAtual.cs" Link="Origem/IUsuarioAtual.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Interfaces/ILembreteRepository.cs" Link="Origem/ILembreteRepository.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Interfaces/ILembreteService.cs" Link="Origem/ILembreteService.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Interfaces/ITipoLembreteRepository.cs" Link="Origem/ITipoLembreteRepository.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Interfaces/ITipoLembreteService.cs" Link="Origem/ITipoLembreteService.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Notificacoes/EscolhaNotificacao.cs" Link="Origem/EscolhaNotificacao.cs" />
+    <Compile Include="../../ProjetoExtensao/Application/Perfil/ArquivoImagemPerfil.cs" Link="Origem/ArquivoImagemPerfil.cs" />
+    <Compile Include="../../ProjetoExtensao/DTOs/**/*.cs" Link="Origem/DTOs/%(Filename).cs" />
+    <Compile Include="../../ProjetoExtensao/Mappings/MappingExtensions.cs" Link="Origem/MappingExtensions.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Validacoes/ValidacaoLembrete.cs" Link="Origem/ValidacaoLembrete.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Validacoes/ValidacaoTipoLembrete.cs" Link="Origem/ValidacaoTipoLembrete.cs" />
     <Compile Include="../../ProjetoExtensao/Application/Services/LembreteService.cs" Link="Origem/LembreteService.cs" />
@@ -38,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- InMemory roda os testes sem SQL Server; Relational traz os metodos de
+         mapeamento (ToTable, HasColumnName) que o AppDbContext usa. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />

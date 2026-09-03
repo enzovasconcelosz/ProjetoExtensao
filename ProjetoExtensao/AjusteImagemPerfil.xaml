@@ -11,6 +11,8 @@
         <Grid ColumnDefinitions="Auto,*,Auto">
             <Button Grid.Column="0"
                     Text="‹"
+                    SemanticProperties.Description="Voltar"
+                    SemanticProperties.Hint="Retorna para a tela anterior"
                     FontSize="28"
                     BackgroundColor="Transparent"
                     Padding="0"

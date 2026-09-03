@@ -187,6 +187,10 @@ public partial class CadastroLembrete : ContentPage
                 await ImagemLembrete.SalvarAsync(entidade.Id, _novaImagem);
             else if (_removerImagem)
                 ImagemLembrete.Remover(entidade.Id);
+
+            // Agendado depois de gravar, pelo mesmo motivo: o aviso e
+            // identificado pelo Id do lembrete. Na edicao, substitui o anterior.
+            await NotificacaoLembrete.AgendarAsync(entidade);
         }
         catch (Exception ex)
         {

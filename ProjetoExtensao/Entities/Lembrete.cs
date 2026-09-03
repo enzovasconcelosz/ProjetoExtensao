@@ -22,5 +22,9 @@ namespace ProjetoExtensao.Entities
 
         public long? IdTipoLembrete { get; set; }
         public TipoLembrete? TipoLembrete { get; set; }
+
+        /// <summary>Dono do lembrete: e por ele que cada conta ve apenas os seus.</summary>
+        public long? IdUsuario { get; set; }
+        public Usuario? Usuario { get; set; }
     }
 }
