@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Não Me Esquece — Projeto de Extensão</title>
+<meta name="description" content="Aplicativo de lembretes desenvolvido como Projeto de Extensão do curso de Engenharia de Software da UNIFIL.">
+<style>
+  :root {
+    --azul-escuro: #48547C;
+    --azul: #749DD0;
+    --azul-claro: #CFE7F8;
+    --neutro: #AAA59F;
+    --grafite: #33343B;
+    --card: #E8F2FB;
+    --texto: #33343B;
+    --texto-apoio: #48547C;
+    --fundo: #F4F9FD;
+    --borda: #D5E4F2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    background: linear-gradient(150deg, var(--azul-escuro), var(--azul));
+    color: #fff;
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 12px; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -.02em; }
+  header p { margin: 0 auto; max-width: 46rem; font-size: 1.1rem; opacity: .95; }
+  .tags { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .tags span {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; padding: 5px 14px; font-size: .85rem;
+  }
+  .acoes { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .acoes a {
+    display: inline-block; padding: 11px 22px; border-radius: 10px;
+    text-decoration: none; font-weight: 600; font-size: .95rem;
+    background: #fff; color: var(--azul-escuro);
+  }
+  .acoes a.secundario { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.7); }
+  main { max-width: 62rem; margin: 0 auto; padding: 0 24px 72px; }
+  section { margin-top: 56px; }
+  h2 {
+    font-size: 1.5rem; margin: 0 0 8px; color: var(--azul-escuro);
+    border-bottom: 2px solid var(--borda); padding-bottom: 10px;
+  }
+  h2 + p.intro { color: var(--texto-apoio); margin: 0 0 20px; }
+  .grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .cartao {
+    background: var(--card); border: 1px solid var(--borda);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .cartao h3 { margin: 0 0 6px; font-size: 1rem; color: var(--azul-escuro); }
+  .cartao p { margin: 0; font-size: .92rem; color: var(--texto); }
+  figure {
+    margin: 0; background: #fff; border: 1px solid var(--borda);
+    border-radius: 14px; padding: 22px 18px; overflow-x: auto;
+  }
+  figure + figure { margin-top: 20px; }
+  figcaption {
+    margin-top: 14px; font-size: .85rem; color: var(--texto-apoio);
+    text-align: center; font-style: italic;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borda); }
+  th { color: var(--azul-escuro); font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+  code {
+    background: var(--azul-claro); border-radius: 5px; padding: 1px 6px;
+    font-size: .88em; font-family: ui-monospace, Consolas, monospace;
+  }
+  pre {
+    background: var(--grafite); color: #EDF3F8; border-radius: 12px;
+    padding: 16px 18px; overflow-x: auto; font-size: .88rem;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  ul.limpa { list-style: none; padding: 0; }
+  ul.limpa li { padding: 9px 0; border-bottom: 1px solid var(--borda); font-size: .95rem; }
+  ul.limpa li:last-child { border-bottom: none; }
+  footer {
+    background: var(--grafite); color: #EDF3F8; text-align: center;
+    padding: 32px 24px; font-size: .9rem;
+  }
+  footer a { color: var(--azul-claro); }
+  .mermaid { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Não Me Esquece</h1>
+  <p>
+    Aplicativo de lembretes para quem precisa de apoio para lembrar de consultas,
+    medicamentos e compromissos do dia a dia. Projeto de Extensão do curso de Engenharia
+    de Software da UNIFIL.
+  </p>
+  <div class="tags">
+    <span>.NET 10</span><span>.NET MAUI</span><span>Entity Framework Core</span>
+    <span>SQL Server</span><span>xUnit</span><span>Notificações locais</span><span>Android · Windows · iOS</span>
+  </div>
+  <div class="acoes">
+    <a href="https://github.com/enzovasconcelosz/ProjetoExtensao/releases">Baixar o aplicativo</a>
+    <a class="secundario" href="https://github.com/enzovasconcelosz/ProjetoExtensao">Repositório no GitHub</a>
+    <a class="secundario" href="https://github.com/enzovasconcelosz/ProjetoExtensao#readme">Documentação completa</a>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2>O problema</h2>
+    <p class="intro">
+      Esquecer uma consulta marcada há meses, perder o horário de um remédio, deixar uma
+      conta vencer. Para quem cuida da própria saúde — ou da saúde de outra pessoa — esse
+      esquecimento tem custo real. Aplicativos de agenda existem, mas costumam ser densos
+      demais: telas cheias, informação espalhada e caminhos longos até cadastrar uma
+      única lembrança.
+    </p>
+    <p class="intro">
+      O <strong>Não Me Esquece</strong> foi desenhado no sentido oposto: poucas telas,
+      cadastro em um formulário só e um calendário que mostra de relance em que dias há
+      algo marcado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Funcionalidades</h2>
+    <div class="grade">
+      <div class="cartao">
+        <h3>Lembretes</h3>
+        <p>Nome, categoria, data e hora, descrição e imagem opcional — tudo em um formulário.</p>
+      </div>
+      <div class="cartao">
+        <h3>Tipos de lembrete</h3>
+        <p>Categorias criadas pelo próprio usuário: Saúde, Casa, Trabalho, o que fizer sentido.</p>
+      </div>
+      <div class="cartao">
+        <h3>Notificações</h3>
+        <p>Aviso no aparelho na hora do lembrete, mesmo com o aplicativo fechado e sem internet.</p>
+      </div>
+      <div class="cartao">
+        <h3>Calendário</h3>
+        <p>Visão mensal com os dias que possuem lembrete destacados.</p>
+      </div>
+      <div class="cartao">
+        <h3>Tela inicial</h3>
+        <p>Próximos compromissos e a semana atual, com os dias marcados em destaque.</p>
+      </div>
+      <div class="cartao">
+        <h3>Conta segura</h3>
+        <p>Senha gravada com PBKDF2/SHA-256 e recuperação por código de 6 dígitos enviado por e-mail.</p>
+      </div>
+      <div class="cartao">
+        <h3>Acessibilidade</h3>
+        <p>Tema claro ou escuro e botões descritos para leitor de tela em todas as telas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Arquitetura</h2>
+    <p class="intro">
+      A regra de negócio fica isolada da interface e do banco. As telas e os serviços usam a
+      <strong>mesma validação</strong>, e o serviço depende de uma interface de repositório —
+      é isso que permite testá-lo sem SQL Server instalado.
+    </p>
+    <figure>
+      <pre class="mermaid">
+flowchart TD
+    A["Telas XAML<br/>Login · Tela inicial · Cadastro de lembrete · Calendário"]
+    B["Application/Services<br/>LembreteService · TipoLembreteService"]
+    V["Application/Validacoes<br/>regras de preenchimento"]
+    I["Application/Interfaces<br/>ILembreteRepository · ITipoLembreteRepository"]
+    R["Infrastructure/Repositories<br/>EF Core"]
+    D[("SQL Server<br/>NaoMeEsquece")]
+    S["Services<br/>SenhaHash · EmailSender · Tema · Notificações"]
+
+    A --> B
+    A -.usa a mesma validação.-> V
+    B --> V
+    B --> I
+    R -.implementa.-> I
+    R --> D
+    A --> S
+    S --> N["Sistema operacional<br/>alarme agendado"]
+
+    classDef ui fill:#CFE7F8,stroke:#48547C,color:#33343B
+    classDef app fill:#E8F2FB,stroke:#749DD0,color:#33343B
+    classDef infra fill:#48547C,stroke:#33343B,color:#EDF3F8
+    class A,S ui
+    class N infra
+    class B,V,I app
+    class R,D infra
+      </pre>
+      <figcaption>Diagrama de arquitetura em camadas</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Modelo de dados</h2>
+    <p class="intro">
+      Banco <code>NaoMeEsquece</code>, no SQL Server. O usuário é o centro do modelo: ele
+      possui categorias de lembrete, uma imagem de perfil, um contato eletrônico e as suas
+      preferências de aparência e notificação.
+    </p>
+    <figure>
+      <pre class="mermaid">
+erDiagram
+    Usuario ||--o{ TipoLembrete : "cria"
+    Usuario ||--o| ImagemUsuario : "tem foto"
+    Usuario ||--o| ContatoEletronico : "tem e-mail"
+    Usuario ||--o| Aparencia : "escolhe"
+    Usuario ||--o| PreferenciaUsuario : "configura"
+    TipoLembrete ||--o{ Lembrete : "classifica"
+    TipoLembrete ||--o| ImagemUsuario : "pode ter"
+    TipoNotificacao ||--o{ Lembrete : "define aviso"
+
+    Usuario {
+        bigint Id PK
+        varchar Login
+        varchar Senha "hash PBKDF2"
+        varchar NomeUsuario
+        datetime DataHoraRegistro
+    }
+    Lembrete {
+        bigint Id PK
+        varchar Nome
+        varchar Descricao
+        datetime DataHoraLembrete
+        datetime DataHoraRegistro
+        bigint IdTipoLembrete FK
+        bigint IdTipoNotificacao FK
+    }
+    TipoLembrete {
+        bigint Id PK
+        varchar Nome
+        datetime DataHoraRegistro
+        bigint IdUsuario FK
+        bigint IdImagemUsuario FK
+    }
+    ContatoEletronico {
+        bigint Id PK
+        varchar Descricao "e-mail"
+    }
+    PreferenciaUsuario {
+        bigint Id PK
+        bit FlNotificar
+        bit FlVibrar
+        bit FlSom
+    }
+    Aparencia {
+        bigint Id PK
+        varchar Descricao "tema"
+    }
+    TipoNotificacao {
+        bigint Id PK
+        varchar Descricao
+    }
+    ImagemUsuario {
+        bigint Id PK
+        varbinary ArquivoImagem
+    }
+      </pre>
+      <figcaption>Diagrama entidade-relacionamento</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Fluxo de navegação</h2>
+    <p class="intro">
+      Do login até o cadastro de um lembrete são três toques. A recuperação de senha é o
+      único caminho com mais de uma etapa, por exigência de segurança.
+    </p>
+    <figure>
+      <pre class="mermaid">
+flowchart LR
+    L["Login"] --> TI["Tela inicial"]
+    L --> C["Cadastro de conta"] --> TI
+    L --> ES["Esqueceu a senha"] --> CC["Código de confirmação"] --> AS["Alterar senha"] --> L
+
+    TI --> CFG["Configurações"]
+    TI --> CAL["Calendário"]
+    TI --> CL["Cadastro de lembrete"]
+
+    CFG --> TL["Tipos de lembrete"] --> CTL["Cadastro de tipo"]
+    CFG --> LB["Lembretes"] --> CL
+    CFG --> CAL
+    CFG --> NT["Notificações"]
+    CFG --> AP["Aparência"]
+    CFG --> CU["Dados do usuário"] --> AIP["Ajuste da foto"]
+
+    classDef entrada fill:#48547C,stroke:#33343B,color:#EDF3F8
+    classDef principal fill:#749DD0,stroke:#48547C,color:#fff
+    classDef tela fill:#E8F2FB,stroke:#749DD0,color:#33343B
+    class L,C,ES,CC,AS entrada
+    class TI,CFG principal
+    class CAL,CL,TL,CTL,LB,NT,AP,CU,AIP tela
+      </pre>
+      <figcaption>Mapa de navegação entre as telas</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Notificações</h2>
+    <p class="intro">
+      Quando chega a hora do lembrete, o aplicativo avisa. O agendamento é local — quem
+      guarda o alarme é o sistema operacional —, então o aviso chega <strong>com o
+      aplicativo fechado e sem internet</strong>. Em Configurações → Notificações o
+      usuário escolhe se o aviso vibra, toca, ou os dois.
+    </p>
+    <p class="intro">
+      No Android 8 em diante são os <em>canais</em> de notificação — e não a notificação
+      em si — que definem som e vibração, e um canal não muda depois de criado. Por isso o
+      aplicativo registra quatro canais na inicialização, um para cada combinação, e a
+      escolha decide qual deles recebe o aviso. É também por isso que alterar a
+      preferência reagenda os lembretes já cadastrados.
+    </p>
+    <figure>
+      <pre class="mermaid">
+flowchart LR
+    S["Salvar lembrete"] --> P{"Avisos ligados<br/>e hora no futuro?"}
+    P -->|não| X["Nenhum aviso"]
+    P -->|sim| C{"Como avisar?"}
+
+    C --> C1["Canal<br/>vibrar e tocar"]
+    C --> C2["Canal<br/>somente vibrar"]
+    C --> C3["Canal<br/>somente tocar"]
+    C --> C4["Canal<br/>silencioso"]
+
+    C1 --> A[("Alarme no sistema<br/>operacional")]
+    C2 --> A
+    C3 --> A
+    C4 --> A
+
+    A --> N["Aviso no aparelho<br/>na hora marcada"]
+
+    classDef entrada fill:#48547C,stroke:#33343B,color:#EDF3F8
+    classDef canal fill:#E8F2FB,stroke:#749DD0,color:#33343B
+    classDef destino fill:#749DD0,stroke:#48547C,color:#fff
+    class S,P,C entrada
+    class C1,C2,C3,C4,X canal
+    class A,N destino
+      </pre>
+      <figcaption>Do lembrete salvo até o aviso no aparelho</figcaption>
+    </figure>
+    <table>
+      <thead>
+        <tr><th>Ação</th><th>O que acontece com o aviso</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Salvar um lembrete</td><td>O aviso é agendado para a data e hora escolhidas</td></tr>
+        <tr><td>Editar um lembrete</td><td>O aviso anterior é substituído</td></tr>
+        <tr><td>Excluir um lembrete</td><td>O aviso é cancelado</td></tr>
+        <tr><td>Alterar as preferências</td><td>Todos os lembretes futuros são reagendados</td></tr>
+        <tr><td>Entrar na conta</td><td>Os avisos da conta passam a existir também neste aparelho</td></tr>
+        <tr><td>Sair da conta</td><td>Os avisos agendados são cancelados</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Qualidade</h2>
+    <p class="intro">
+      O projeto combina testes automatizados, que rodam a cada alteração, com testes de
+      usabilidade conduzidos com usuários reais.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Conjunto de testes</th><th>O que garante</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ValidacaoLembreteTests</td><td>Nome mínimo, tipo obrigatório, data futura e descrição preenchida</td></tr>
+        <tr><td>ValidacaoTipoLembreteTests</td><td>Nome mínimo da categoria</td></tr>
+        <tr><td>LembreteServiceTests</td><td>Nenhum dado inválido chega ao banco, mesmo por fora da tela</td></tr>
+        <tr><td>SenhaHashTests</td><td>A senha nunca é gravada em texto puro e a errada é recusada</td></tr>
+        <tr><td>ConfirmationCodeServiceTests</td><td>Código de uso único, com expiração, limite de tentativas e isolamento por e-mail</td></tr>
+        <tr><td>EscolhaNotificacaoTests</td><td>Cada combinação de vibrar/tocar tem canal próprio e estável; nada é agendado com o aviso desligado ou hora no passado</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px">Para rodar os testes:</p>
+    <pre><code>dotnet test Tests/ProjetoExtensao.Tests/ProjetoExtensao.Tests.csproj</code></pre>
+  </section>
+
+  <section>
+    <h2>Acessibilidade</h2>
+    <ul class="limpa">
+      <li><strong>Tema claro, escuro ou o do sistema</strong> — a escolha vale para o aparelho inteiro.</li>
+      <li><strong>Leitor de tela</strong> — todos os botões de ícone (voltar, menu, adicionar, foto de perfil, navegação do calendário) têm nome e dica em português.</li>
+      <li><strong>Ícones decorativos omitidos</strong> — as setas e o sinal "+" não são anunciados isoladamente pelo leitor de tela.</li>
+      <li><strong>Área de toque</strong> — mínimo de 40×40 dp nos controles de ícone.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Documentação</h2>
+    <ul class="limpa">
+      <li><a href="https://github.com/enzovasconcelosz/ProjetoExtensao#readme">README</a> — visão geral, configuração e execução</li>
+      <li><a href="https://github.com/enzovasconcelosz/ProjetoExtensao/blob/master/docs/teste-de-usabilidade.md">Roteiro de teste de usabilidade</a> — tarefas, ficha de registro e verificação de acessibilidade</li>
+      <li><a href="https://github.com/enzovasconcelosz/ProjetoExtensao/blob/master/docs/hospedagem.md">Publicação e hospedagem</a> — banco em nuvem e geração do APK</li>
+      <li><a href="https://github.com/enzovasconcelosz/ProjetoExtensao/blob/master/docs/roteiro-video.md">Roteiro da apresentação em vídeo</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  Projeto de Extensão · Engenharia de Software · UNIFIL<br>
+  Desenvolvido por Enzo Vasconcelos de Morais ·
+  <a href="https://github.com/enzovasconcelosz/ProjetoExtensao">github.com/enzovasconcelosz/ProjetoExtensao</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "base",
+    themeVariables: {
+      fontFamily: '-apple-system, "Segoe UI", Roboto, sans-serif',
+      primaryColor: "#E8F2FB",
+      primaryTextColor: "#33343B",
+      primaryBorderColor: "#749DD0",
+      lineColor: "#48547C",
+      secondaryColor: "#CFE7F8",
+      tertiaryColor: "#F4F9FD"
+    }
+  });
+</script>
+
+</body>
+</html>
