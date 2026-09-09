@@ -260,7 +260,6 @@ ProjetoExtensao/
 │   ├── DTOs/ Mappings/           Objetos de transporte e conversões
 │   ├── Infrastructure/           DbContext e repositórios (EF Core)
 │   ├── Services/                 Hash de senha, e-mail, tema, imagens
-│   ├── Scripts/                  Scripts SQL do banco anterior (SQL Server)
 │   └── Resources/                Estilos, cores, fontes e imagens
 ├── Tests/ProjetoExtensao.Tests/  Testes automatizados (xUnit)
 └── docs/                         Página do GitHub Pages e documentação
