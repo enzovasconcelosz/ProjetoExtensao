@@ -44,7 +44,6 @@
                   HorizontalOptions="Center">
 
                 <Border StrokeThickness="0"
-                        IsClippedToBounds="True"
                         BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="4" />

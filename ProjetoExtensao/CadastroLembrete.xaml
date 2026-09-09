@@ -148,7 +148,6 @@
                             SemanticProperties.Description="Imagem do lembrete"
                             HeightRequest="56"
                             StrokeThickness="0"
-                            IsClippedToBounds="True"
                             BackgroundColor="{StaticResource PaletaAzulClaro}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />

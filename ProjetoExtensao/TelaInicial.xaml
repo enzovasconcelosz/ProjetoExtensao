@@ -174,7 +174,6 @@
                             WidthRequest="56"
                             HeightRequest="56"
                             VerticalOptions="Start"
-                            IsClippedToBounds="True"
                             BackgroundColor="{StaticResource PaletaAzulClaro}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
