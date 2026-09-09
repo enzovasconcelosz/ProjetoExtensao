@@ -43,41 +43,41 @@ public partial class Configuracoes : ContentPage
             // aqui evita que a tela mostre os dados de quem acabou de sair.
             Preferences.Default.Remove("PerfilNome");
             Preferences.Default.Remove("PerfilEmail");
-            App.Current.MainPage = new Login();
+            Navegacao.IrPara(new Login());
         }
     }
 
     private void BotaoPerfil_Clicked(object sender, EventArgs e)
     {
         // Aberta a partir daqui, a tela de perfil volta para as configuracoes
-        App.Current.MainPage = new ConfiguracoesUsuario(() => new Configuracoes());
+        Navegacao.IrPara(new ConfiguracoesUsuario(() => new Configuracoes()));
     }
 
     private void BtnLembretes_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Lembretes();
+        Navegacao.IrPara(new Lembretes());
     }
 
     private void BtnCalendario_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Calendario(null, () => new Configuracoes());
+        Navegacao.IrPara(new Calendario(null, () => new Configuracoes()));
     }
 
     private void BotaoNotificacoes_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new ConfiguracoesNotificacoes();
+        Navegacao.IrPara(new ConfiguracoesNotificacoes());
     }
 
     private void BotaoAparencia_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new ConfiguracoesAparencia();
+        Navegacao.IrPara(new ConfiguracoesAparencia());
     }
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
         try
         {
-            App.Current.MainPage = new TelaInicial();
+            Navegacao.IrPara(new TelaInicial());
         }
         catch
         {
@@ -89,7 +89,7 @@ public partial class Configuracoes : ContentPage
     {
         try
         {
-            App.Current.MainPage = new TipoLembretes();
+            Navegacao.IrPara(new TipoLembretes());
         }
         catch
         {

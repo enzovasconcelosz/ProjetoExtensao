@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Shapes;
 using ProjetoExtensao.Application.Interfaces;
@@ -171,9 +171,9 @@ public partial class Calendario : ContentPage
 
     private void AbrirCadastro(DateTime data)
     {
-        App.Current.MainPage = new CadastroLembrete(
+        Navegacao.IrPara(new CadastroLembrete(
             data,
-            () => new Calendario(data, _paginaAnterior));
+            () => new Calendario(data, _paginaAnterior)));
     }
 
     private void BotaoMesAnterior_Clicked(object sender, EventArgs e)
@@ -190,6 +190,6 @@ public partial class Calendario : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = _paginaAnterior();
+        Navegacao.IrPara(_paginaAnterior());
     }
 }

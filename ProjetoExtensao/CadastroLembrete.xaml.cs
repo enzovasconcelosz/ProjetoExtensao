@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.Application.Validacoes;
 using ProjetoExtensao.DTOs;
@@ -209,6 +209,6 @@ public partial class CadastroLembrete : ContentPage
     // O projeto troca a MainPage em vez de usar pilha de navegacao
     private void Voltar()
     {
-        App.Current.MainPage = _paginaAnterior();
+        Navegacao.IrPara(_paginaAnterior());
     }
 }

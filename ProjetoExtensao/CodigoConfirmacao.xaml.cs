@@ -1,4 +1,4 @@
-using ProjetoExtensao.Services;
+﻿using ProjetoExtensao.Services;
 
 namespace ProjetoExtensao;
 
@@ -36,7 +36,7 @@ public partial class CodigoConfirmacao : ContentPage
         {
             case ConfirmationCodeService.ResultadoValidacao.Valido:
                 LimparAviso();
-                App.Current.MainPage = new AlterarSenha(_email);
+                Navegacao.IrPara(new AlterarSenha(_email));
                 return;
 
             case ConfirmationCodeService.ResultadoValidacao.Incorreto:
@@ -46,17 +46,17 @@ public partial class CodigoConfirmacao : ContentPage
 
             case ConfirmationCodeService.ResultadoValidacao.Expirado:
                 await DisplayAlert("Código expirado", "O código perdeu a validade. Solicite um novo.", "Fechar");
-                App.Current.MainPage = new EsqueceuSenha();
+                Navegacao.IrPara(new EsqueceuSenha());
                 return;
 
             case ConfirmationCodeService.ResultadoValidacao.TentativasExcedidas:
                 await DisplayAlert("Tentativas excedidas", "O código foi invalidado por excesso de tentativas. Solicite um novo.", "Fechar");
-                App.Current.MainPage = new EsqueceuSenha();
+                Navegacao.IrPara(new EsqueceuSenha());
                 return;
 
             default:
                 await DisplayAlert("Código não encontrado", "Nenhum código pendente para este e-mail. Solicite um novo.", "Fechar");
-                App.Current.MainPage = new EsqueceuSenha();
+                Navegacao.IrPara(new EsqueceuSenha());
                 return;
         }
     }
@@ -111,7 +111,7 @@ public partial class CodigoConfirmacao : ContentPage
     {
         // Descarta o código pendente ao desistir da recuperação
         ConfirmationCodeService.Descartar(_email);
-        App.Current.MainPage = new Login();
+        Navegacao.IrPara(new Login());
     }
 
     private void MostrarAviso(string mensagem)

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Maui.Graphics;
 
 namespace ProjetoExtensao;
@@ -24,7 +24,7 @@ public partial class Cadastro : ContentPage
 
 	private void BotaoJaTenhoConta_Clicked(object sender, EventArgs e)
 	{
-		App.Current.MainPage = new Login();
+		Navegacao.IrPara(new Login());
 	}
 
     private async void BotaoRegistrar_Clicked(object sender, EventArgs e)
@@ -95,7 +95,7 @@ public partial class Cadastro : ContentPage
 			await DisplayAlert("Sucesso", "Usuário cadastrado com sucesso.", "Ok");
 
 			// Volta para tela de login
-			App.Current.MainPage = new Login();
+			Navegacao.IrPara(new Login());
         }
 		catch (Exception ex)
 		{

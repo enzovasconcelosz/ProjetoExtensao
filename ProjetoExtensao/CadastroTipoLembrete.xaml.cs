@@ -1,4 +1,4 @@
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.Application.Validacoes;
 using ProjetoExtensao.DTOs;
@@ -80,6 +80,6 @@ public partial class CadastroTipoLembrete : ContentPage
     // O projeto troca a MainPage em vez de usar pilha de navegacao
     private static void Voltar()
     {
-        App.Current.MainPage = new TipoLembretes();
+        Navegacao.IrPara(new TipoLembretes());
     }
 }

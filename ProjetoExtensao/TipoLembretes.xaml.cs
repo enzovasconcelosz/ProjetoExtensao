@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.DTOs;
 using ProjetoExtensao.Mappings;
@@ -66,13 +66,13 @@ public partial class TipoLembretes : ContentPage
         if (_service == null)
             return;
 
-        App.Current.MainPage = new CadastroTipoLembrete(_service);
+        Navegacao.IrPara(new CadastroTipoLembrete(_service));
     }
 
     private void BtnEditar_Clicked(object sender, EventArgs e)
     {
         if (_service != null && sender is Button botao && botao.BindingContext is TipoLembreteDto dto)
-            App.Current.MainPage = new CadastroTipoLembrete(_service, dto);
+            Navegacao.IrPara(new CadastroTipoLembrete(_service, dto));
     }
 
     private async void BtnExcluir_Clicked(object sender, EventArgs e)
@@ -97,6 +97,6 @@ public partial class TipoLembretes : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Configuracoes();
+        Navegacao.IrPara(new Configuracoes());
     }
 }

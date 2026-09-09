@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.Infrastructure.Data;
@@ -20,7 +20,7 @@ public partial class Login : ContentPage
 
     private void BotaoEsqueceuSenha_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new EsqueceuSenha();
+        Navegacao.IrPara(new EsqueceuSenha());
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public partial class Login : ContentPage
             await PreferenciaNotificacao.CarregarDoBancoAsync(usuario.Login);
             await ReagendarAvisosAsync();
 
-            App.Current.MainPage = new TelaInicial();
+            Navegacao.IrPara(new TelaInicial());
         }
         catch (Exception ex)
         {
@@ -124,7 +124,7 @@ public partial class Login : ContentPage
 
     private void BotaoCadastrar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Cadastro();
+        Navegacao.IrPara(new Cadastro());
     }
 
     private void TogglePasswordVisibility_Clicked(object sender, EventArgs e)

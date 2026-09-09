@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoExtensao.Infrastructure.Data;
 
 namespace ProjetoExtensao;
@@ -88,6 +88,6 @@ public partial class ConfiguracoesAparencia : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Configuracoes();
+        Navegacao.IrPara(new Configuracoes());
     }
 }

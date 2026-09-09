@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 using ProjetoExtensao.DTOs;
 using ProjetoExtensao.Mappings;
@@ -69,13 +69,13 @@ public partial class Lembretes : ContentPage
 
     private void BtnAdicionar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new CadastroLembrete(() => new Lembretes(_paginaAnterior));
+        Navegacao.IrPara(new CadastroLembrete(() => new Lembretes(_paginaAnterior)));
     }
 
     private void BtnEditar_Clicked(object sender, EventArgs e)
     {
         if (sender is Button botao && botao.BindingContext is LembreteItem item)
-            App.Current.MainPage = new CadastroLembrete(item.Dto, () => new Lembretes(_paginaAnterior));
+            Navegacao.IrPara(new CadastroLembrete(item.Dto, () => new Lembretes(_paginaAnterior)));
     }
 
     private async void BtnExcluir_Clicked(object sender, EventArgs e)
@@ -102,7 +102,7 @@ public partial class Lembretes : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = _paginaAnterior();
+        Navegacao.IrPara(_paginaAnterior());
     }
 }
 

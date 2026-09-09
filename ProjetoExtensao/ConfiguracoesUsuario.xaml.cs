@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoExtensao.Entities;
 using ProjetoExtensao.Infrastructure.Data;
 
@@ -89,9 +89,9 @@ public partial class ConfiguracoesUsuario : ContentPage
             await origem.CopyToAsync(memoria);
 
             // O recorte e escolhido em tela propria, ja que o avatar e circular
-            App.Current.MainPage = new AjusteImagemPerfil(
+            Navegacao.IrPara(new AjusteImagemPerfil(
                 memoria.ToArray(),
-                () => new ConfiguracoesUsuario(_paginaAnterior));
+                () => new ConfiguracoesUsuario(_paginaAnterior)));
         }
         catch (Exception ex)
         {
@@ -166,6 +166,6 @@ public partial class ConfiguracoesUsuario : ContentPage
 
     private void Voltar()
     {
-        App.Current.MainPage = _paginaAnterior();
+        Navegacao.IrPara(_paginaAnterior());
     }
 }

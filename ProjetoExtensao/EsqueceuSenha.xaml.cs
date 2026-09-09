@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoExtensao;
 
@@ -24,7 +24,7 @@ public partial class EsqueceuSenha : ContentPage
 
     private void BotaoCancelar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Login();
+        Navegacao.IrPara(new Login());
     }
 
     private async void BotaoPesquisar_Clicked(object sender, EventArgs e)
@@ -58,7 +58,7 @@ public partial class EsqueceuSenha : ContentPage
             if (usuario == null)
             {
                 await DisplayAlert("Não encontrado", $"Não foi encontrado um e-mail cadastrado com {emailInformado}.", "Fechar");
-                App.Current.MainPage = new Login();
+                Navegacao.IrPara(new Login());
                 return;
             }
 
@@ -92,7 +92,7 @@ public partial class EsqueceuSenha : ContentPage
                     break;
             }
 
-            App.Current.MainPage = new CodigoConfirmacao(emailInformado);
+            Navegacao.IrPara(new CodigoConfirmacao(emailInformado));
         }
         catch (Exception ex)
         {

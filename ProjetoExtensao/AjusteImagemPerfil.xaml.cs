@@ -1,4 +1,4 @@
-namespace ProjetoExtensao;
+﻿namespace ProjetoExtensao;
 
 /// <summary>
 /// Escolha do recorte da foto de perfil.
@@ -151,6 +151,6 @@ public partial class AjusteImagemPerfil : ContentPage
 
     private void Voltar()
     {
-        App.Current.MainPage = _paginaAnterior();
+        Navegacao.IrPara(_paginaAnterior());
     }
 }

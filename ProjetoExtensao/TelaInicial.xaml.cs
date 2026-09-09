@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -197,23 +197,23 @@ public partial class TelaInicial : ContentPage
     private void BotaoMenu_Tapped(object sender, TappedEventArgs e)
     {
         // O menu de tres linhas abre a tela que antes era aberta pela imagem redonda
-        App.Current.MainPage = new Configuracoes();
+        Navegacao.IrPara(new Configuracoes());
     }
 
     private void BotaoPerfil_Clicked(object sender, EventArgs e)
     {
         // A imagem redonda abre as configuracoes do proprio usuario
-        App.Current.MainPage = new ConfiguracoesUsuario();
+        Navegacao.IrPara(new ConfiguracoesUsuario());
     }
 
     private void BotaoCadastrarLembrete_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new CadastroLembrete(() => new TelaInicial());
+        Navegacao.IrPara(new CadastroLembrete(() => new TelaInicial()));
     }
 
     private void BotaoVerLembretes_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Lembretes(() => new TelaInicial());
+        Navegacao.IrPara(new Lembretes(() => new TelaInicial()));
     }
 
     private void WeekCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -236,7 +236,7 @@ public partial class TelaInicial : ContentPage
         // Trocar a MainPage dentro do proprio evento de selecao quebra a
         // renderizacao; a navegacao vai para o proximo ciclo da interface.
         Dispatcher.Dispatch(() =>
-            App.Current.MainPage = new Calendario(selecionado.Date, () => new TelaInicial()));
+            Navegacao.IrPara(new Calendario(selecionado.Date, () => new TelaInicial())));
     }
 
     private void BuildWeekDays()

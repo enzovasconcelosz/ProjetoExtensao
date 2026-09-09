@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProjetoExtensao.Application.Interfaces;
 
 namespace ProjetoExtensao;
@@ -125,6 +125,6 @@ public partial class ConfiguracoesNotificacoes : ContentPage
 
     private void BotaoVoltar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Configuracoes();
+        Navegacao.IrPara(new Configuracoes());
     }
 }

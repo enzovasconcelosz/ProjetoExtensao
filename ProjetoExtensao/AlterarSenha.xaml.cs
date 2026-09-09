@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoExtensao.Infrastructure.Data;
 
 namespace ProjetoExtensao;
@@ -58,7 +58,7 @@ public partial class AlterarSenha : ContentPage
             if (usuario == null)
             {
                 await DisplayAlert("Erro", "Usuário não encontrado.", "Fechar");
-                App.Current.MainPage = new Login();
+                Navegacao.IrPara(new Login());
                 return;
             }
 
@@ -66,7 +66,7 @@ public partial class AlterarSenha : ContentPage
             await contexto.SaveChangesAsync();
 
             await DisplayAlert("Sucesso", "Senha alterada com sucesso.", "Fechar");
-            App.Current.MainPage = new Login();
+            Navegacao.IrPara(new Login());
         }
         catch (Exception ex)
         {
@@ -76,7 +76,7 @@ public partial class AlterarSenha : ContentPage
 
     private void BtnCancelar_Clicked(object sender, EventArgs e)
     {
-        App.Current.MainPage = new Login();
+        Navegacao.IrPara(new Login());
     }
 
     private void MostrarAviso(string mensagem)
