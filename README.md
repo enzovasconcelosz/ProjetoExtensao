@@ -19,7 +19,7 @@ tema claro/escuro.
 5. [Como configurar](#como-configurar)
 6. [Como executar](#como-executar)
 7. [Testes](#testes)
-8. [Publicação e hospedagem](#publicação-e-hospedagem)
+8. [Publicação e distribuição](#publicação-e-distribuição)
 9. [Notificações](#notificações)
 10. [Acessibilidade](#acessibilidade)
 11. [Estrutura de pastas](#estrutura-de-pastas)
@@ -43,7 +43,7 @@ tema claro/escuro.
 ## Tecnologias
 
 - **.NET 10** e **.NET MAUI** (Android, iOS, MacCatalyst e Windows)
-- **Entity Framework Core** com **SQL Server**
+- **Entity Framework Core** com **SQLite** (banco local, no próprio aparelho)
 - **xUnit** para os testes automatizados
 - **Plugin.LocalNotification** para os avisos agendados no aparelho
 - **SMTP** para o envio dos códigos de recuperação de senha
@@ -59,7 +59,7 @@ Páginas XAML  ──►  Application/Services  ──►  Application/Interface
                           │                        ▲
                           ▼                        │
                   Application/Validacoes    Infrastructure/Repositories
-                  (regras de preenchimento)  (EF Core → SQL Server)
+                  (regras de preenchimento)  (EF Core → SQLite)
 ```
 
 Dois pontos importantes do desenho:
@@ -68,11 +68,13 @@ Dois pontos importantes do desenho:
   usadas pela tela (para orientar o usuário, campo a campo) e pelo serviço (para impedir
   que qualquer outro caminho grave um dado inválido).
 - **O serviço não conhece o banco.** Ele depende de `ILembreteRepository`, o que permite
-  testá-lo com um repositório em memória, sem SQL Server instalado.
+  testá-lo com um repositório em memória, sem banco nenhum instalado.
 
 ## Modelo de dados
 
-Banco `NaoMeEsquece` (SQL Server). Tabelas no singular:
+Os dados ficam em um arquivo SQLite (`naomeesquece.db3`) dentro da área privada do
+aplicativo no aparelho. As tabelas são criadas no primeiro uso, pelo próprio EF Core, e
+seguem o nome no singular:
 
 - **Usuario** — login, senha (hash), nome; referencia `Imagem`, `ContatoEletronico`,
   `Aparencia` e `PreferenciaUsuario`.
@@ -96,7 +98,6 @@ O diagrama entidade-relacionamento está na
 | --- | --- |
 | .NET SDK | 10.0 ou superior |
 | Workload MAUI | `dotnet workload install maui` |
-| SQL Server | 2019+ (Express serve) ou Azure SQL |
 | Visual Studio 2022/2026 | opcional, com a carga "Desenvolvimento para dispositivos móveis com .NET" |
 
 ### 1. Clonar o repositório
@@ -105,12 +106,10 @@ O diagrama entidade-relacionamento está na
 git clone https://github.com/enzovasconcelosz/ProjetoExtensao.git
 ```
 
-### 2. Criar o banco de dados
+### 2. Configurar o e-mail
 
-Crie o banco `NaoMeEsquece` no SQL Server e, em seguida, execute os scripts da pasta
-[`ProjetoExtensao/Scripts`](ProjetoExtensao/Scripts) em ordem numérica.
-
-### 3. Configurar a conexão e o e-mail
+O banco não precisa de configuração: o arquivo SQLite é criado automaticamente na primeira
+execução, dentro da pasta do aplicativo.
 
 As configurações ficam em `ProjetoExtensao/appsettings.json`. Para desenvolvimento local,
 use `appsettings.Development.json` — ele **não** é versionado, então as suas senhas não vão
@@ -125,9 +124,6 @@ para o repositório.
     "Password": "sua-senha-de-aplicativo",
     "From": "seu-endereco@gmail.com",
     "EnableSsl": "true"
-  },
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=NaoMeEsquece;Trusted_Connection=True;TrustServerCertificate=True;"
   }
 }
 ```
@@ -181,9 +177,9 @@ dotnet test Tests/ProjetoExtensao.Tests/ProjetoExtensao.Tests.csproj
 O roteiro dos testes com usuários reais está em
 [`docs/teste-de-usabilidade.md`](docs/teste-de-usabilidade.md).
 
-## Publicação e hospedagem
+## Publicação e distribuição
 
-O passo a passo completo — banco em nuvem e geração do APK — está em
+O passo a passo completo — geração e distribuição do APK — está em
 [`docs/hospedagem.md`](docs/hospedagem.md).
 
 ## Notificações
@@ -264,7 +260,7 @@ ProjetoExtensao/
 │   ├── DTOs/ Mappings/           Objetos de transporte e conversões
 │   ├── Infrastructure/           DbContext e repositórios (EF Core)
 │   ├── Services/                 Hash de senha, e-mail, tema, imagens
-│   ├── Scripts/                  Scripts SQL de evolução do banco
+│   ├── Scripts/                  Scripts SQL do banco anterior (SQL Server)
 │   └── Resources/                Estilos, cores, fontes e imagens
 ├── Tests/ProjetoExtensao.Tests/  Testes automatizados (xUnit)
 └── docs/                         Página do GitHub Pages e documentação

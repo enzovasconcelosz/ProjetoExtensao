@@ -1,73 +1,72 @@
-# Publicação e hospedagem
+# Publicação e distribuição
 
 O Não Me Esquece é um aplicativo .NET MAUI: ele roda no aparelho do usuário, não em um
-navegador. "Hospedar a aplicação" aqui significa duas coisas:
-
-1. **Colocar o banco de dados em um servidor**, para que qualquer aparelho com o
-   aplicativo instalado acesse os mesmos dados;
-2. **Distribuir o instalador**, para que os usuários consigam baixar e instalar.
+navegador. Os dados ficam em um banco **SQLite dentro do próprio aparelho**, então
+publicar o aplicativo se resume a **distribuir o instalador** — não há servidor de banco
+para manter, configurar ou pagar.
 
 ```
-Celular do usuário                    Servidor
-┌──────────────────┐                 ┌────────────────────┐
-│  Não Me Esquece  │ ──── TCP 1433 ──►│  SQL Server / Azure │
-│  (APK instalado) │                 │  banco NaoMeEsquece │
-└──────────────────┘                 └────────────────────┘
-        ▲
-        │ download do APK
-   GitHub Releases
+        Celular do usuário
+┌────────────────────────────────┐
+│  Não Me Esquece (APK)          │
+│  ┌──────────────────────────┐  │
+│  │ naomeesquece.db3 (SQLite)│  │
+│  └──────────────────────────┘  │
+└────────────────────────────────┘
+                ▲
+                │ download do APK
+         GitHub Releases
 ```
 
 ---
 
-## Parte 1 — Banco de dados no servidor
+## Parte 1 — O banco de dados
 
-### Opção A: Azure SQL Database (recomendada)
+### Onde os dados ficam
 
-O nível **Basic** custa poucos reais por mês e a Azure oferece crédito para contas de
-estudante ([Azure for Students](https://azure.microsoft.com/pt-br/free/students/), sem
-cartão de crédito).
+O arquivo `naomeesquece.db3` é criado em `FileSystem.AppDataDirectory`, a área privada do
+aplicativo no aparelho. Nenhum outro aplicativo consegue lê-lo, e ele é removido junto com
+o aplicativo quando o usuário o desinstala.
 
-1. No [portal da Azure](https://portal.azure.com), crie um **SQL Database**:
-   - Nome do banco: `NaoMeEsquece`
-   - Servidor: crie um novo, anote o nome (`seuservidor.database.windows.net`), o login e a senha do administrador
-   - Camada de computação: **Basic** ou **Serverless (General Purpose)**
-2. Em **Rede**, marque "Permitir que serviços e recursos do Azure acessem este servidor" e
-   adicione o seu IP à regra de firewall.
-3. Conecte-se pelo SQL Server Management Studio ou pelo editor de consultas do portal e
-   execute os scripts de `ProjetoExtensao/Scripts` em ordem numérica para criar as tabelas.
-4. No aplicativo, ajuste a cadeia de conexão em `appsettings.Development.json`:
+As tabelas são criadas sozinhas no primeiro uso: `Conexao.GarantirBancoCriado()` roda na
+inicialização (`MauiProgram`) e chama o `EnsureCreated` do EF Core. **Não há nada para
+configurar** — o usuário baixa, instala e o aplicativo já grava.
 
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=tcp:seuservidor.database.windows.net,1433;Database=NaoMeEsquece;User ID=seulogin;Password=SUA_SENHA;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  }
-}
-```
+### O que isso significa na prática
 
-> A senha do banco **não** pode ser publicada no GitHub. Mantenha-a apenas em
-> `appsettings.Development.json`, que já está no `.gitignore`.
+| | |
+| --- | --- |
+| Funciona sem internet | Sim — os lembretes não dependem de rede |
+| Precisa de servidor, senha ou firewall | Não |
+| Custo de hospedagem | Nenhum |
+| Dados visíveis a outros aplicativos | Não |
+| Dados compartilhados entre aparelhos | **Não** — cada aparelho tem o seu banco |
 
-### Opção B: SQL Server em uma VPS
+### Limitação conhecida
 
-Se preferir um servidor próprio (Contabo, Hostinger, DigitalOcean…):
+Como o banco vive no aparelho, **trocar de celular significa começar do zero**: os
+lembretes não acompanham a conta. O login e a separação por usuário continuam valendo
+dentro do mesmo aparelho (duas pessoas podem usar o mesmo celular sem ver os lembretes uma
+da outra), mas não há sincronização.
 
-1. Instale o SQL Server Express no servidor.
-2. Habilite a autenticação **SQL Server e Windows** (autenticação mista).
-3. Habilite o protocolo TCP/IP no SQL Server Configuration Manager e libere a porta 1433
-   no firewall.
-4. Crie um login exclusivo do aplicativo, com permissão apenas no banco `NaoMeEsquece`.
-5. Use a cadeia de conexão:
-   `Server=IP_DO_SERVIDOR,1433;Database=NaoMeEsquece;User ID=appnaomeesquece;Password=SUA_SENHA;TrustServerCertificate=True;`
+A evolução natural do projeto, se a sincronização passar a ser necessária, é colocar uma
+**API REST** entre o aplicativo e um banco em nuvem. O desenho em camadas já favorece
+isso: as telas falam com `Application/Services`, que dependem das interfaces de
+repositório — bastaria uma implementação de `ILembreteRepository` que chame a API, sem
+mexer em nenhuma tela.
 
-### Checklist de segurança
+> Conectar o aplicativo **direto** a um banco em nuvem (Azure SQL, por exemplo) seria mais
+> simples, mas exigiria embutir a senha do banco dentro do APK e expor o servidor à
+> internet — qualquer pessoa poderia extrair a senha do arquivo instalado e acessar os
+> dados de todos os usuários. Por isso esse caminho foi descartado.
 
-- [ ] Login do aplicativo **não** é o administrador (`sa`) e só enxerga o banco `NaoMeEsquece`
-- [ ] Conexão com criptografia (`Encrypt=True` na Azure)
-- [ ] Firewall liberado apenas para as origens necessárias
-- [ ] Senha fora do controle de versão
-- [ ] Backup automático ativo (na Azure já vem ligado)
+### Por que não usar `Preferences`
+
+O MAUI oferece `Preferences`, um armazenamento de chave/valor parecido com o `localStorage`
+do navegador. O projeto o usa para configurações simples — tema, sessão, preferências de
+notificação. Ele **não** serve para os lembretes: não há como consultar por período nem
+relacionar lembrete, tipo e usuário em um dicionário de strings. Por isso os dados
+relacionais ficam no SQLite.
 
 ---
 
@@ -125,8 +124,9 @@ dotnet publish ProjetoExtensao/ProjetoExtensao.csproj -f net10.0-windows10.0.190
 ## Verificação final
 
 - [ ] Aplicativo instalado em um aparelho **diferente** do de desenvolvimento
-- [ ] Cadastro de conta funcionando contra o banco no servidor
-- [ ] Lembrete criado em um aparelho aparece ao entrar com a mesma conta em outro
+- [ ] Cadastro de conta funcionando já na primeira abertura (o banco se cria sozinho)
+- [ ] Lembrete criado continua lá depois de fechar e reabrir o aplicativo
+- [ ] Duas contas no mesmo aparelho não enxergam os lembretes uma da outra
 - [ ] Recuperação de senha enviando e-mail
 - [ ] Aviso do lembrete chegando no horário, com o aplicativo fechado
 - [ ] Link do Releases abrindo para quem não tem acesso ao repositório

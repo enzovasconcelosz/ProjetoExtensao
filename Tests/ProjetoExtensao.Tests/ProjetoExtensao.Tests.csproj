@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -47,10 +47,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- InMemory roda os testes sem SQL Server; Relational traz os metodos de
-         mapeamento (ToTable, HasColumnName) que o AppDbContext usa. -->
+    <!-- InMemory roda as regras de negocio sem tocar em banco; Sqlite e o mesmo
+         provedor do aplicativo, usado no EsquemaSqliteTests para conferir que o
+         schema e criado e que os dados voltam intactos. -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.13" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />

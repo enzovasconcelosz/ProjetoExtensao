@@ -45,8 +45,11 @@ namespace ProjetoExtensao
             // Usa a string do appsettings quando existir; senao cai no padrao do projeto
             Conexao.Definir(builder.Configuration.GetConnectionString("DefaultConnection"));
 
+            // O arquivo do banco nao existe em um aparelho recem-instalado
+            Conexao.GarantirBancoCriado();
+
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Conexao.Atual)
+                options.UseSqlite(Conexao.Atual)
             );
 
             // Quem esta logado: os repositorios usam para separar os dados por conta

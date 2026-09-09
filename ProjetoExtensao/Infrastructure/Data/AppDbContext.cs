@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoExtensao.Domain.Entities;
 using ProjetoExtensao.Entities;
 
@@ -20,8 +20,9 @@ namespace ProjetoExtensao.Infrastructure.Data
         public DbSet<Aparencia> Aparencias { get; set; } = null!;
         public DbSet<TipoNotificacao> TipoNotificacoes { get; set; } = null!;
 
-        // O mapeamento abaixo segue o schema real do banco NaoMeEsquece
-        // (tabelas no singular, chaves inteiras e colunas varchar).
+        // O mapeamento abaixo segue o schema do banco NaoMeEsquece (tabelas no
+        // singular e chaves inteiras). Os tamanhos usam HasMaxLength em vez de
+        // HasColumnType para nao amarrar o modelo a um provedor especifico.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -38,10 +39,9 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("Usuario");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Login).HasColumnType("varchar(100)").IsRequired();
-                entity.Property(e => e.Senha).HasColumnType("varchar(255)").IsRequired();
-                entity.Property(e => e.NomeUsuario).HasColumnType("varchar(150)").IsRequired();
-                entity.Property(e => e.DataHoraRegistro).HasColumnType("datetime");
+                entity.Property(e => e.Login).HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Senha).HasMaxLength(255).IsRequired();
+                entity.Property(e => e.NomeUsuario).HasMaxLength(150).IsRequired();
                 entity.Property(e => e.IdImagem).HasConversion<int>();
                 entity.Property(e => e.IdContatoEletronico).HasConversion<int>();
                 entity.Property(e => e.IdAparencia).HasConversion<int>();
@@ -69,7 +69,7 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("ContatoEletronico");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Descricao).HasColumnType("varchar(255)");
+                entity.Property(e => e.Descricao).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Aparencia>(entity =>
@@ -77,7 +77,7 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("Aparencia");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Descricao).HasColumnType("varchar(255)");
+                entity.Property(e => e.Descricao).HasMaxLength(255);
             });
 
             modelBuilder.Entity<PreferenciaUsuario>(entity =>
@@ -98,7 +98,7 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("TipoNotificacao");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Descricao).HasColumnType("varchar(255)");
+                entity.Property(e => e.Descricao).HasMaxLength(255);
             });
 
             modelBuilder.Entity<TipoLembrete>(entity =>
@@ -106,8 +106,7 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("TipoLembrete");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Nome).HasColumnType("varchar(100)").IsRequired();
-                entity.Property(e => e.DataHoraRegistro).HasColumnType("datetime");
+                entity.Property(e => e.Nome).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.IdImagemUsuario).HasColumnName("IdImagem").HasConversion<int>();
                 entity.Property(e => e.IdUsuario).HasConversion<int>();
 
@@ -120,10 +119,8 @@ namespace ProjetoExtensao.Infrastructure.Data
                 entity.ToTable("Lembrete");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion<int>().ValueGeneratedOnAdd();
-                entity.Property(e => e.Nome).HasColumnType("varchar(100)").IsRequired();
-                entity.Property(e => e.Descricao).HasColumnType("varchar(max)");
-                entity.Property(e => e.DataHoraLembrete).HasColumnType("datetime").IsRequired();
-                entity.Property(e => e.DataHoraRegistro).HasColumnType("datetime");
+                entity.Property(e => e.Nome).HasMaxLength(100).IsRequired();
+                entity.Property(e => e.DataHoraLembrete).IsRequired();
                 entity.Property(e => e.IdTipoLembrete).HasConversion<int>();
                 entity.Property(e => e.IdTipoNotificacao).HasConversion<int>();
                 entity.Property(e => e.IdUsuario).HasConversion<int>();
