@@ -69,11 +69,17 @@
                         Grid.Row="1"
                         ItemsSource="{Binding WeekDays}"
                         SelectionMode="Single"
-                        HeightRequest="72"
-                        ItemsLayout="HorizontalList">
+                        HeightRequest="72">
+            <!-- Sao sempre sete dias, entao a semana e uma grade de sete colunas
+                 iguais: cada dia recebe a mesma fatia da largura disponivel e a
+                 faixa acompanha a tela, como os cartoes abaixo. Uma HorizontalList
+                 daria itens de largura fixa, sobrando espaco a direita. -->
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="7" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="4,0" WidthRequest="48" RowDefinitions="Auto,*" RowSpacing="6">
+                    <Grid Padding="4,0" RowDefinitions="Auto,*" RowSpacing="6">
                         <!-- Remove o destaque roxo padrao da selecao; o dia atual
                              ja se distingue pelo proprio circulo preenchido -->
                         <VisualStateManager.VisualStateGroups>
